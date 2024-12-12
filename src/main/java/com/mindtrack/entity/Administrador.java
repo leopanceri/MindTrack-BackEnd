@@ -1,10 +1,11 @@
 package com.mindtrack.entity;
 
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "funcionarios")
-public class Funcionario {
+@Table(name = "administradores")
+public class Administrador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
@@ -23,10 +24,10 @@ public class Funcionario {
     @JoinColumn (name="id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 
-    public Funcionario() {
+    public Administrador() {
     }
 
-    public Funcionario(Long id, String cpf, String nome, String email, String setor, String cargo, Usuario usuario) {
+    public Administrador(Long id, String cpf, String nome, String email, String setor, String cargo, Usuario usuario) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
