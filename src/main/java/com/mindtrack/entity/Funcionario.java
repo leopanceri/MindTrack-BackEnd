@@ -26,7 +26,7 @@ public class Funcionario {
     public Funcionario() {
     }
 
-    public Funcionario(Long id, String cpf, String nome, String email, String setor, String cargo, Usuario usuario) {
+    public Funcionario(Long id,String cpf, String nome, String email, String setor, String cargo, Usuario usuario) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
