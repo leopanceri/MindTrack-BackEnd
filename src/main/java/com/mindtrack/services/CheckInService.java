@@ -18,7 +18,7 @@ public class CheckInService {
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public List<CheckIn> findAllByFuncionario(int idFuncionario) throws ObjectNotFoundException {
-        return checkInRepository.findByIdFuncionario(idFuncionario);
+        return checkInRepository.findByIdFuncionarioOrderByDataHoraDesc(idFuncionario);
     }
 
     public void crateNewCheckIn(CheckIn checkIn) {
