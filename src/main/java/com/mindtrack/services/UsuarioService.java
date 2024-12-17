@@ -11,11 +11,11 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Long criarUsuario(String login, String perfil){
+    public Usuario criarUsuario(String login, String perfil){
         Usuario usuario = new Usuario();
         usuario.setLogin(login);
         usuario.setPerfil(perfil);
         usuario.setSenha("123456");
-        return usuarioRepository.save(usuario).getId();
+        return usuarioRepository.save(usuario);
     }
 }

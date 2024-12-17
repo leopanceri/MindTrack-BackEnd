@@ -1,6 +1,7 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.Funcionario;
+import com.mindtrack.entity.Usuario;
 import com.mindtrack.repository.FuncionarioRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    @Autowired
-    private UsuarioService usuarioService;
 
     public Funcionario findById(Long id) throws ObjectNotFoundException {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
@@ -27,10 +26,8 @@ public class FuncionarioService {
         return funcionarioRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
     }
 
-    public Funcionario createFuncionario(Funcionario f){
-        Long usuarioID = usuarioService.criarUsuario(f.getEmail(), "FUNCIONARIO");
-        f.setUsuarioId(usuarioID);
-        return funcionarioRepository.save(f);
+    public void createFuncionario(Funcionario f){
+        funcionarioRepository.save(f);
     }
 
     public Funcionario updateFuncionario(Long id, Funcionario funcionario){
