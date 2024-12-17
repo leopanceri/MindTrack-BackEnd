@@ -1,25 +1,25 @@
 package com.mindtrack.services;
 
-import com.mindtrack.entity.Administrador;
-import com.mindtrack.entity.CadastroDTO;
-import com.mindtrack.entity.Funcionario;
-import com.mindtrack.entity.Usuario;
+import com.mindtrack.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class CadastroService {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
 
     @Autowired
-    FuncionarioService funcionarioService;
+    private FuncionarioService funcionarioService;
 
     @Autowired
-    AdministradorService administradorService;
+    private AdministradorService administradorService;
+
 
     public Usuario cadastrarUsuario(CadastroDTO cadastroDTO) {
         Usuario usuario = usuarioService.criarUsuario(cadastroDTO.getEmail(), cadastroDTO.getPerfil());
@@ -34,5 +34,11 @@ public class CadastroService {
             administradorService.createAdministrador(adm);
         }
         return usuario;
+    }
+
+    public List<CadastroDTO> retornaTodosCadastrados(){
+        List<CadastroInterface> cadastroList = usuarioService.buscarUsuariosCadastrados();
+        List<CadastroDTO> result = cadastroList.stream().map(e -> new CadastroDTO(e)).collect(Collectors.toList());
+        return result;
     }
 }
