@@ -55,7 +55,12 @@ public class CadastroController {
     }
 
     @DeleteMapping("/cadastros/{id}")
-    public void removerUsuario(@PathVariable Long id){
-        cadastroService.removeCadastro(id);
+    public ResponseEntity<?> removerUsuario(@PathVariable Long id){
+        try{
+            cadastroService.removeCadastro(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuário removido com sucesso!");
+        }catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
