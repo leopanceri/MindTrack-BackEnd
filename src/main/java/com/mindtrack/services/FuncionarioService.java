@@ -16,6 +16,8 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
+    @Autowired
+    private CheckInService checkInService;
 
     public Funcionario findById(Long id) throws ObjectNotFoundException {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
@@ -37,4 +39,11 @@ public class FuncionarioService {
     public void deleteFuncionario(Long id){
         funcionarioRepository.deleteById(id);
     }
+
+    public void removeFuncByUsuario(Usuario usuario) {
+        Funcionario f =  funcionarioRepository.findByUsuario(usuario);
+        checkInService.removerCheckIns(f.getId());
+        funcionarioRepository.deleteById(f.getId());
+    }
+
 }

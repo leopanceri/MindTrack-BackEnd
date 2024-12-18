@@ -28,4 +28,11 @@ public class CheckInController {
     public void novoCheckin(@RequestBody CheckIn checkIn) {
         checkInService.crateNewCheckIn(checkIn);
     }
+/*
+    @DeleteMapping("/checkin/{id}")
+    public void removercheckin(@PathVariable Long id){
+        checkInService.removerCheckIns(id);
+    }
+
+ */
 }

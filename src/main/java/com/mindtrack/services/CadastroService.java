@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,5 +41,21 @@ public class CadastroService {
         List<CadastroInterface> cadastroList = usuarioService.buscarUsuariosCadastrados();
         List<CadastroDTO> result = cadastroList.stream().map(e -> new CadastroDTO(e)).collect(Collectors.toList());
         return result;
+    }
+
+    public void atualizaCadastro(CadastroDTO c) {
+
+    }
+
+    public void removeCadastro(Long id) {
+        Usuario u = usuarioService.buscaUsuarioId(id);
+        if(u != null){
+            if(Objects.equals(u.getPerfil(), "FUNCIONARIO")){
+                funcionarioService.removeFuncByUsuario(u);
+            }else{
+                administradorService.removeAdmByUsuario(u);
+            }
+        }
+        usuarioService.removeUsuario(id);
     }
 }

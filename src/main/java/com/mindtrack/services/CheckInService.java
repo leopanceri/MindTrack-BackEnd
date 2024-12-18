@@ -5,6 +5,7 @@ import com.mindtrack.repository.CheckInRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,5 +25,10 @@ public class CheckInService {
     public void crateNewCheckIn(CheckIn checkIn) {
         checkIn.setCheckInData(LocalDateTime.now());
         checkInRepository.save(checkIn);
+    }
+
+    @Transactional
+    public void removerCheckIns(Long id) {
+        checkInRepository.deleteByIdFuncionario(id.intValue());
     }
 }

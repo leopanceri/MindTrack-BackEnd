@@ -30,16 +30,6 @@ public class FuncionarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getClass());
         }
     }
-/*
-    @PostMapping("/funcionarios/novo")
-    public ResponseEntity<?> inserirFuncionario(@RequestBody Funcionario funcionario){
-        try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.createFuncionario(funcionario));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getClass());
-        }
-    }
-*/
 
     @PutMapping("/funcionarios/perfil/{id}")
     public ResponseEntity<?> alterarPerfil(@PathVariable Long id, @RequestBody Funcionario funcionario){

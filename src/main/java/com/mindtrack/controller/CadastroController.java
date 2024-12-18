@@ -35,4 +35,14 @@ public class CadastroController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PutMapping("/cadastros/editar") //ainda não está implementado
+    public void atualizaCadastro(@RequestBody CadastroDTO c){
+        cadastroService.atualizaCadastro(c);
+    }
+
+    @DeleteMapping("/cadastros/{id}")
+    public void removerUsuario(@PathVariable Long id){
+        cadastroService.removeCadastro(id);
+    }
 }

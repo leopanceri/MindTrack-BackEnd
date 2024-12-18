@@ -27,4 +27,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             ORDER BY nome ASC
             """, nativeQuery = true)
     List<CadastroInterface> buscarUsuariosCadastrados();
+
+    void deleteUsuarioById(Long id);
 }
