@@ -55,17 +55,13 @@ public class CadastroService {
     }
 
     public CadastroDTO findById(Long idUsuario) {
-        // Primeiro, encontra o Usuario com o ID fornecido
         Usuario usuario = usuarioService.buscaUsuarioId(idUsuario);
         
         if (usuario == null) {
-            // Se o usuário não for encontrado, retorna uma exceção ou mensagem apropriada
             throw new RuntimeException("Usuário não encontrado com o ID: " + idUsuario);
         }
         
-        // Aqui é onde você verifica o perfil do usuário para determinar onde buscar os dados adicionais
         if (Objects.equals(usuario.getPerfil(), "Funcionario")) {
-            // Se for "Funcionario", busca os dados na tabela "funcionarios"
             Funcionario funcionario = funcionarioRepository.findByUsuario(usuario);
             if (funcionario == null) {
                 throw new RuntimeException("Funcionário não encontrado para o Usuário com ID: " + idUsuario);
@@ -73,14 +69,12 @@ public class CadastroService {
             return new CadastroDTO(funcionario);  // Retorna os dados do Funcionario
     
         } else if (Objects.equals(usuario.getPerfil(), "Administrador")) {
-            // Se for "Administrador", busca os dados na tabela "administradores"
             Administrador administrador = administradorRepository.findByUsuario(usuario);
             if (administrador == null) {
                 throw new RuntimeException("Administrador não encontrado para o Usuário com ID: " + idUsuario);
             }
-            return new CadastroDTO(administrador);  // Retorna os dados do Administrador
+            return new CadastroDTO(administrador); 
         } else {
-            // Caso o perfil do usuário não seja nem "Funcionario" nem "Administrador"
             throw new RuntimeException("Perfil inválido associado ao Usuário com ID: " + idUsuario);
         }
     }    
