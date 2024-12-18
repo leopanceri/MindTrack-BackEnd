@@ -3,6 +3,8 @@ package com.mindtrack.controller;
 
 import com.mindtrack.entity.CadastroDTO;
 import com.mindtrack.services.CadastroService;
+import com.mindtrack.services.UsuarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ public class CadastroController {
 
     @Autowired
     private CadastroService cadastroService;
+
 
     @PostMapping("/cadastro/novo")
     public ResponseEntity<?> novoCadastro(@RequestBody CadastroDTO cadastroDTO){
@@ -33,6 +36,16 @@ public class CadastroController {
             return ResponseEntity.status(HttpStatus.OK).body(cadastroService.retornaTodosCadastrados());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/cadastros/{id}")
+    public ResponseEntity<?> getUsuario(@PathVariable Long id) {
+        try {
+            CadastroDTO cadastroDTO = cadastroService.findById(id);  
+            return ResponseEntity.status(HttpStatus.OK).body(cadastroDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
