@@ -28,11 +28,15 @@ public class FuncionarioService {
         return funcionarioRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
     }
 
+    public Funcionario findByUsuario(Usuario u) {
+        return funcionarioRepository.findByUsuario(u);
+    }
+
     public void createFuncionario(Funcionario f){
         funcionarioRepository.save(f);
     }
 
-    public Funcionario updateFuncionario(Long id, Funcionario funcionario){
+    public Funcionario updateFuncionario(Funcionario funcionario){
         return funcionarioRepository.save(funcionario);
     }
 
@@ -41,9 +45,10 @@ public class FuncionarioService {
     }
 
     public void removeFuncByUsuario(Usuario usuario) {
-        Funcionario f =  funcionarioRepository.findByUsuario(usuario);
+        Funcionario f =  findByUsuario(usuario);
         checkInService.removerCheckIns(f.getId());
         funcionarioRepository.deleteById(f.getId());
     }
+
 
 }

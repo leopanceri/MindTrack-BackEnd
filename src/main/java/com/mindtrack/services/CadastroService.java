@@ -81,7 +81,30 @@ public class CadastroService {
     
 
     public void atualizaCadastro(CadastroDTO c) {
-
+        Usuario u = usuarioService.buscaUsuarioId(c.getId());
+        if (u == null) {
+            throw new RuntimeException("Usuário não encontrado com o ID: " + c.getId());
+        }else{
+            u.setLogin(c.getEmail());
+            usuarioService.updateUsuario(u);
+        }
+        if(Objects.equals(u.getPerfil(), "Funcionario")){
+            Funcionario f = funcionarioService.findByUsuario(u);
+            f.setNome(c.getNome());
+            f.setCpf(c.getCpf());
+            f.setEmail(c.getEmail());
+            f.setCargo(c.getCargo());
+            f.setSetor(c.getSetor());
+            funcionarioService.updateFuncionario(f);
+        }else{
+            Administrador a = administradorService.findByUsuario(u);
+            a.setNome(c.getNome());
+            a.setCpf(c.getCpf());
+            a.setEmail(c.getEmail());
+            a.setCargo(c.getCargo());
+            a.setSetor(c.getSetor());
+            administradorService.updateAdministrador(a);
+        }
     }
 
     public void removeCadastro(Long id) {
