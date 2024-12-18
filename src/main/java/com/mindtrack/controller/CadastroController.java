@@ -50,8 +50,13 @@ public class CadastroController {
     }
 
     @PutMapping("/cadastros/editar") //ainda não está implementado
-    public void atualizaCadastro(@RequestBody CadastroDTO c){
-        cadastroService.atualizaCadastro(c);
+    public ResponseEntity<?> atualizaCadastro(@RequestBody CadastroDTO c){
+        try{
+            cadastroService.atualizaCadastro(c);
+            return ResponseEntity.status(HttpStatus.OK).body("Cadastro Atualizado");
+        }catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro na atualização cadastral");
+        }
     }
 
     @DeleteMapping("/cadastros/{id}")

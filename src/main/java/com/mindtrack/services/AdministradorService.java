@@ -1,6 +1,7 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.Administrador;
+import com.mindtrack.entity.Funcionario;
 import com.mindtrack.entity.Usuario;
 import com.mindtrack.repository.AdministradorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,13 @@ public class AdministradorService {
     @Transactional
     public void removeAdmByUsuario(Usuario usuario) {
         administradorRepository.deleteByUsuario(usuario);
+    }
+
+    public Administrador findByUsuario(Usuario u) {
+        return administradorRepository.findByUsuario(u);
+    }
+
+    public Administrador updateAdministrador(Administrador administrador){
+        return administradorRepository.save(administrador);
     }
 }
