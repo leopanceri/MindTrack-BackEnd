@@ -87,7 +87,7 @@ public class CadastroService {
     public void removeCadastro(Long id) {
         Usuario u = usuarioService.buscaUsuarioId(id);
         if(u != null){
-            if(Objects.equals(u.getPerfil(), "FUNCIONARIO")){
+            if(Objects.equals(u.getPerfil(), "Funcionario")){
                 funcionarioService.removeFuncByUsuario(u);
             }else{
                 administradorService.removeAdmByUsuario(u);
