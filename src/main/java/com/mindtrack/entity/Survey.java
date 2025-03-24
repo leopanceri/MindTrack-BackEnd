@@ -2,7 +2,6 @@ package com.mindtrack.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,23 +12,23 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name ="questionarios")
-public class Questionario {
+public class Survey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
     private Long id;
-    @Column(name= "datapubli")
-    private LocalDate dataPubli;
-    @Column(name= "dataval")
-    private LocalDate dataVal;
+    @Column(name= "data_publi")
+    private LocalDate publicationDate;
+    @Column(name= "data_validade")
+    private LocalDate dueDate;
     @Column(name= "titulo")
-    private String titulo;
+    private String title;
     @Column(name= "descricao")
-    private String descricao;
+    private String description;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name= "quest_perguntas", joinColumns = @JoinColumn(name = "id_questionario"),
                 inverseJoinColumns = @JoinColumn(name = "id_pergunta" ))
-    private List<Pergunta> perguntas;
+    private List<Question> questions;
 
 
 }

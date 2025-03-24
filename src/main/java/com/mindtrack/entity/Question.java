@@ -3,23 +3,16 @@ package com.mindtrack.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name ="perguntas")
-public class Pergunta {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
     private Long id;
     @Column (name="texto")
-    private String texto;
-
-    public Pergunta() {
-    }
-
-    public Pergunta(Long id, String texto) {
-        this.id = id;
-        this.texto = texto;
-    }
+    private String text;
 }

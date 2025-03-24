@@ -50,8 +50,7 @@ public class CadastroService {
 
     public List<CadastroDTO> retornaTodosCadastrados(){
         List<CadastroInterface> cadastroList = usuarioService.buscarUsuariosCadastrados();
-        List<CadastroDTO> result = cadastroList.stream().map(e -> new CadastroDTO(e)).collect(Collectors.toList());
-        return result;
+        return cadastroList.stream().map(CadastroDTO::new).collect(Collectors.toList());
     }
 
     public CadastroDTO findById(Long idUsuario) {
