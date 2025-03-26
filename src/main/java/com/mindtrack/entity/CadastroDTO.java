@@ -1,5 +1,12 @@
 package com.mindtrack.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CadastroDTO {
 
     private Long id; // ID da tabela Usuario
@@ -10,16 +17,6 @@ public class CadastroDTO {
     private String cargo;
     private String perfil;
 
-    // Construtor completo
-    public CadastroDTO(Long id, String cpf, String nome, String email, String setor, String cargo, String perfil) {
-        this.id = id;
-        this.cpf = cpf;
-        this.nome = nome;
-        this.email = email;
-        this.setor = setor;
-        this.cargo = cargo;
-        this.perfil = perfil;
-    }
 
     // Construtor usando CadastroInterface
     public CadastroDTO(CadastroInterface cadastro) {
@@ -54,60 +51,4 @@ public class CadastroDTO {
         this.perfil = "Administrador";
     }
 
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSetor() {
-        return setor;
-    }
-
-    public void setSetor(String setor) {
-        this.setor = setor;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(String perfil) {
-        this.perfil = perfil;
-    }
 }
