@@ -1,5 +1,6 @@
 package com.mindtrack.controller;
 
+import com.mindtrack.entity.QuestionDTO;
 import com.mindtrack.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +15,9 @@ public class QuestionController {
     private QuestionService questionService;
 
     @PostMapping("/novapergunta")
-    public ResponseEntity<?> novaPergunta(@RequestBody String p){
+    public ResponseEntity<?> novaPergunta(@RequestBody QuestionDTO questionDTO) {
         try {
-            questionService.cadastrarNovaPergunta(p);
+            questionService.cadastrarNovaPergunta(questionDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Pergunta criada com sucesso!");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar Pergunta!");

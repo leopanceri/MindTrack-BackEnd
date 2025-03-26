@@ -1,20 +1,28 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.Survey;
+import com.mindtrack.entity.SurveyDTO;
 import com.mindtrack.repository.SurveyRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SurveyService {
 
-    private final SurveyRepository surveyRepository;
+    @Autowired
+    private SurveyRepository surveyRepository;
 
-    public SurveyService(SurveyRepository surveyRepository) {
-        this.surveyRepository = surveyRepository;
-    }
-    public List<Survey> listaQuestionarios() {
-        return surveyRepository.findAll();
+    @Autowired
+    private ModelMapper surveyMapper;
+
+
+    public List<SurveyDTO> listaQuestionarios() {
+        List<Survey> surveys = surveyRepository.findAll();
+        return surveys.stream().map(e-> surveyMapper.map(e, SurveyDTO.class)).collect(Collectors.toList());
     }
 }
