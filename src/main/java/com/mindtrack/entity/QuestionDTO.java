@@ -1,5 +1,6 @@
 package com.mindtrack.entity;
 
+import com.mindtrack.enums.Category;
 import lombok.*;
 
 @Data
@@ -8,11 +9,13 @@ import lombok.*;
 public class QuestionDTO {
 
     private Long id;
-    private String texto;
+    private String category;
+    private String text;
 
     public QuestionDTO(Question question) {
         this.id = question.getId();
-        this.texto = question.getText();
+        this.category = question.getCategory().getValue();
+        this.text = question.getText();
     }
 }
 
