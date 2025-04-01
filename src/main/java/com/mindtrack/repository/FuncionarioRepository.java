@@ -12,6 +12,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
 
     public List<Funcionario> findByNomeContaining(String nome);
 
-    public Funcionario findByUsuario(Usuario u);
+    //public Funcionario findByUsuario(Usuario u);
 
 }

@@ -29,6 +29,8 @@ public class Survey {
     @JoinTable(name= "quest_perguntas", joinColumns = @JoinColumn(name = "id_questionario"),
                 inverseJoinColumns = @JoinColumn(name = "id_pergunta" ))
     private List<Question> questions;
-
+    @ManyToOne
+    @JoinColumn(name = "id_administrador")
+    private Administrador publisher;
 
 }

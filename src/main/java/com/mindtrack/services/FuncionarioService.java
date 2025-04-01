@@ -1,7 +1,7 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.Funcionario;
-import com.mindtrack.entity.Usuario;
+import com.mindtrack.entity.dto.CadastroDTO;
 import com.mindtrack.repository.FuncionarioRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +16,6 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    @Autowired
-    private CheckInService checkInService;
-
     public Funcionario findById(Long id) throws ObjectNotFoundException {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
         return funcionario.orElseThrow();
@@ -28,27 +25,33 @@ public class FuncionarioService {
         return funcionarioRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
     }
 
-    public Funcionario findByUsuario(Usuario u) {
-        return funcionarioRepository.findByUsuario(u);
+    public Funcionario createFuncionario(Funcionario f) {
+        f.setStatus("ATIVO");
+        f.setSenha("ABC123");
+        return funcionarioRepository.save(f);
     }
 
-    public void createFuncionario(Funcionario f){
-        funcionarioRepository.save(f);
-    }
-
-    public Funcionario updateFuncionario(Funcionario funcionario){
+    public Funcionario updateFuncionario(CadastroDTO cadastroDto) {
+        Funcionario funcionario = funcionarioRepository.findById(cadastroDto.getId()).orElseThrow(()->new RuntimeException("Funcionário não encontrado"));
+        funcionario.setCpf(cadastroDto.getCpf());
+        funcionario.setNome(cadastroDto.getNome());
+        funcionario.setEmail(cadastroDto.getEmail());
+        funcionario.setSetor(cadastroDto.getSetor());
+        funcionario.setCargo(cadastroDto.getCargo());
         return funcionarioRepository.save(funcionario);
     }
 
     public void deleteFuncionario(Long id){
         funcionarioRepository.deleteById(id);
     }
-
+/*
     public void removeFuncByUsuario(Usuario usuario) {
         Funcionario f =  findByUsuario(usuario);
         checkInService.removerCheckIns(f.getId());
         funcionarioRepository.deleteById(f.getId());
     }
+
+ */
 
 
 }

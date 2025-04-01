@@ -1,7 +1,7 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.Question;
-import com.mindtrack.entity.QuestionDTO;
+import com.mindtrack.entity.dto.QuestionDTO;
 import com.mindtrack.enums.converters.CategoryConverter;
 import com.mindtrack.repository.QuestionRepository;
 import org.modelmapper.ModelMapper;
@@ -30,5 +30,10 @@ public class QuestionService {
     public List<QuestionDTO> listarPerguntas() {
         List<Question> lista = questionRepository.findAll();
         return lista.stream().map(e-> questionMapper.map(e, QuestionDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<Question> listarTodasPerguntasPorId(List<Long> ids) {
+        List<Question> lista = questionRepository.findAllById(ids);
+        return lista;
     }
 }

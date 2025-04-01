@@ -1,6 +1,7 @@
 package com.mindtrack.controller;
 
 import com.mindtrack.entity.CheckIn;
+import com.mindtrack.entity.dto.CheckInDTO;
 import com.mindtrack.services.CheckInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class CheckInController {
     }
 
     @PostMapping("/checkin")
-    public void novoCheckin(@RequestBody CheckIn checkIn) {
-        checkInService.crateNewCheckIn(checkIn);
+    public void novoCheckin(@RequestBody CheckInDTO checkInDTO) {
+        checkInService.crateNewCheckIn(checkInDTO);
     }
 /*
     @DeleteMapping("/checkin/{id}")

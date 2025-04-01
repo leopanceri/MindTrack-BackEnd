@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdministradorRepository extends JpaRepository<Administrador, Long> {
 
-    Administrador findByUsuario(Usuario u);
+    //Administrador findByUsuario(Usuario u);
 
-    void deleteByUsuario(Usuario u);
+   // void deleteByUsuario(Usuario u);
 }

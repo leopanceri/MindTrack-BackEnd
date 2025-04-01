@@ -1,15 +1,17 @@
-package com.mindtrack.entity;
+package com.mindtrack.entity.dto;
 
+import com.mindtrack.entity.Administrador;
+import com.mindtrack.entity.CadastroInterface;
+import com.mindtrack.entity.Funcionario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CadastroDTO {
+public class CadastroDTO{
 
-    private Long id; // ID da tabela Usuario
+    private Long id;          // ID da tabela Usuario
     private String cpf;
     private String nome;
     private String email;
@@ -28,7 +30,7 @@ public class CadastroDTO {
         this.cargo = cadastro.getCargo();
         this.perfil = cadastro.getPerfil();
     }
-
+/*
     // Novo construtor para Funcionario
     public CadastroDTO(Funcionario funcionario) {
         this.id = funcionario.getUsuario().getId(); // ID do usuário relacionado
@@ -50,5 +52,5 @@ public class CadastroDTO {
         this.cargo = administrador.getCargo();
         this.perfil = "Administrador";
     }
-
+*/
 }
