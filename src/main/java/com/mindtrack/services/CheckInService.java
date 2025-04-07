@@ -1,6 +1,7 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.CheckIn;
+import com.mindtrack.entity.dto.CheckInDTO;
 import com.mindtrack.repository.CheckInRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +19,26 @@ public class CheckInService {
 
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+    @Autowired
+    private FuncionarioService funcionarioService;
+
     public List<CheckIn> findAllByFuncionario(int idFuncionario) throws ObjectNotFoundException {
-        return checkInRepository.findByIdFuncionarioOrderByDataHoraDesc(idFuncionario);
+        return checkInRepository.findByFuncionarioOrderByDateTime(funcionarioService.findById((long) idFuncionario));
     }
 
-    public void crateNewCheckIn(CheckIn checkIn) {
-        checkIn.setCheckInData(LocalDateTime.now());
+    public void crateNewCheckIn(CheckInDTO checkInDTO) {
+        CheckIn checkIn = new CheckIn();
+        checkIn.setDateTime(LocalDateTime.now());
+        checkIn.setHumorLevel(checkInDTO.getHumorLevel());
+        checkIn.setComment(checkInDTO.getComment());
+        checkIn.setFuncionario(funcionarioService.findById((long) checkInDTO.getIdFuncionario()));
         checkInRepository.save(checkIn);
     }
-
+/*
     @Transactional
     public void removerCheckIns(Long id) {
         checkInRepository.deleteByIdFuncionario(id.intValue());
     }
+
+ */
 }

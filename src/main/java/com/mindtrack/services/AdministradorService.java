@@ -3,7 +3,9 @@ package com.mindtrack.services;
 import com.mindtrack.entity.Administrador;
 import com.mindtrack.entity.Funcionario;
 import com.mindtrack.entity.Usuario;
+import com.mindtrack.entity.dto.CadastroDTO;
 import com.mindtrack.repository.AdministradorRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,19 +17,23 @@ public class AdministradorService {
     private AdministradorRepository administradorRepository;
 
     public void createAdministrador(Administrador a){
+        a.setSenha("ABC123");
+        a.setStatus("ATIVO");
         administradorRepository.save(a);
     }
 
-    @Transactional
-    public void removeAdmByUsuario(Usuario usuario) {
-        administradorRepository.deleteByUsuario(usuario);
+    public Administrador findById(Long id) {
+        return administradorRepository.findById(id).orElseThrow(()-> new RuntimeException("Administrador inválido"));
     }
 
-    public Administrador findByUsuario(Usuario u) {
-        return administradorRepository.findByUsuario(u);
-    }
-
-    public Administrador updateAdministrador(Administrador administrador){
+    public Administrador updateAdministrador(CadastroDTO cadastroDTO){
+        Administrador administrador = administradorRepository.findById(cadastroDTO.getId())
+                .orElseThrow(()-> new RuntimeException("Administrador não encontrado"));
+        administrador.setCpf(cadastroDTO.getCpf());
+        administrador.setNome(cadastroDTO.getNome());
+        administrador.setEmail(cadastroDTO.getEmail());
+        administrador.setCargo(cadastroDTO.getCargo());
+        administrador.setSetor(cadastroDTO.getSetor());
         return administradorRepository.save(administrador);
     }
 }

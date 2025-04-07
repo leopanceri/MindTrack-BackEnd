@@ -1,9 +1,11 @@
 package com.mindtrack.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "checkins")
 public class CheckIn {
@@ -12,62 +14,24 @@ public class CheckIn {
     @Column (name="id")
     private Long id;
     @Column (name="data_hora")
-    private LocalDateTime dataHora;
+    private LocalDateTime dateTime;
     @Column (name="nivel_humor")
-    private int nivelHumor;
+    private int humorLevel;
     @Column (name="comentario")
-    private String comentario;
-    @Column (name="id_funcionario")
-    private int idFuncionario;
+    private String comment;
+    @ManyToOne
+    @JoinColumn(name="id_funcionario")
+    private Funcionario funcionario;
 
     public CheckIn() {
     }
 
-    public CheckIn(Long id, LocalDateTime dataHora, int nivelHumor, String comentario, int idFuncionario) {
+    public CheckIn(Long id, LocalDateTime dateTime, int humorLevel, String comment, Funcionario funcionario) {
         this.id = id;
-        this.dataHora = dataHora;
-        this.nivelHumor = nivelHumor;
-        this.comentario = comentario;
-        this.idFuncionario = idFuncionario;
+        this.dateTime = dateTime;
+        this.humorLevel = humorLevel;
+        this.comment = comment;
+        this.funcionario = funcionario;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCheckInData() {
-        return dataHora;
-    }
-
-    public void setCheckInData(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
-    }
-
-    public int getNivelHumor() {
-        return nivelHumor;
-    }
-
-    public void setNivelHumor(int nivelHumor) {
-        this.nivelHumor = nivelHumor;
-    }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public int getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(int funcionarioId) {
-        this.idFuncionario = funcionarioId;
-    }
 }

@@ -1,6 +1,6 @@
-package com.mindtrack.entity;
+package com.mindtrack.entity.dto;
 
-import com.mindtrack.enums.Category;
+import com.mindtrack.entity.Question;
 import lombok.*;
 
 @Data

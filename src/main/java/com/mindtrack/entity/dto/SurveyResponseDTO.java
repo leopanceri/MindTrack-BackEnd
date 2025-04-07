@@ -1,4 +1,5 @@
-package com.mindtrack.entity;
+package com.mindtrack.entity.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +11,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SurveyDTO {
+public class SurveyResponseDTO {
     private Long id;
     private LocalDate publicationDate;
     private LocalDate dueDate;
     private String title;
     private String description;
-    private List<Long> questionsId;
+    private List<QuestionDTO> questions;
+    private CadastroDTO publisher;
 }

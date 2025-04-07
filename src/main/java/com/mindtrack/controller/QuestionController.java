@@ -1,6 +1,6 @@
 package com.mindtrack.controller;
 
-import com.mindtrack.entity.QuestionDTO;
+import com.mindtrack.entity.dto.QuestionDTO;
 import com.mindtrack.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,59 +1,47 @@
 package com.mindtrack.entity;
 
+import com.mindtrack.entity.dto.CadastroDTO;
 import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.Formula;
 
+@Data
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="perfil", discriminatorType = DiscriminatorType.STRING)
 @Table(name="usuarios")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column (name="id")
     private Long id;
-    @Column(name="login")
-    private String login;
-    @Column(name="senha")
+    @Column (name="cpf")
+    private String cpf;
+    @Column (name="nome")
+    private String nome;
+    @Column (name="email")
+    private String email;
+    @Column (name="setor")
+    private String setor;
+    @Column (name="cargo")
+    private String cargo;
+    @Column (name="status")
+    private String status;
+    @Column (name="senha")
     private String senha;
-    @Column(name="perfil")
+    @Formula("perfil")
     private String perfil;
 
+    public Usuario(CadastroDTO cadastroDTO) {
+        this.id = cadastroDTO.getId();
+        this.cpf= cadastroDTO.getCpf();
+        this.nome= cadastroDTO.getNome();
+        this.email= cadastroDTO.getEmail();
+        this.setor= cadastroDTO.getSetor();
+        this.cargo= cadastroDTO.getCargo();
+    }
+
     public Usuario() {
-    }
 
-    public Usuario(String login, String senha, String perfil) {
-        this.login = login;
-        this.senha = senha;
-        this.perfil = perfil;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(String perfil) {
-        this.perfil = perfil;
     }
 }
