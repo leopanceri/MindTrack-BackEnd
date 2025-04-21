@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,5 +54,17 @@ public class SurveyService {
     public SurveyResponseDTO questionarioById(Long id) {
         return surveyRepository.findById(id).map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).
                 orElseThrow(()->new RuntimeException("Questionário não encontrado!"));
+    }
+
+    public Survey findSurveyById(Long id) {
+        return surveyRepository.findById(id).orElseThrow(()->new RuntimeException("Questionário não encontrado 2!"));
+    }
+
+    public List<SurveyResponseDTO> listaQuestionariosNaoRespondidos(Long funcionarioId) {
+        List<Survey> surveys = surveyRepository.findQuestionariosNaoRespondidosPorUsuario(funcionarioId);
+        if (surveys.isEmpty()) {
+            throw new NoSuchElementException("Nenhum questionário disponível para o funcionário informado.");
+        }
+        return surveys.stream().map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).collect(Collectors.toList());
     }
 }
