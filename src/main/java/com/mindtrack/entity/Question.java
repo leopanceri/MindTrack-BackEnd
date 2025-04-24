@@ -20,4 +20,8 @@ public class Question {
     private Category category;
     @Column (name="texto")
     private String text;
+
+    public Question(Long questionId) {
+        this.id = questionId;
+    }
 }

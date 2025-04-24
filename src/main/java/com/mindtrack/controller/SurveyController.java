@@ -1,14 +1,8 @@
 package com.mindtrack.controller;
 
-import com.mindtrack.entity.Administrador;
-import com.mindtrack.entity.Question;
-import com.mindtrack.entity.Survey;
+import com.mindtrack.entity.dto.ReplyDTO;
 import com.mindtrack.entity.dto.SurveyDTO;
-import com.mindtrack.entity.dto.SurveyResponseDTO;
-import com.mindtrack.repository.QuestionRepository;
-import com.mindtrack.repository.SurveyRepository;
-import com.mindtrack.services.AdministradorService;
-import com.mindtrack.services.QuestionService;
+import com.mindtrack.services.SurveyReplyService;
 import com.mindtrack.services.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @CrossOrigin
 @RestController
 public class SurveyController {
@@ -24,6 +19,8 @@ public class SurveyController {
     @Autowired
     private SurveyService surveyService;
 
+    @Autowired
+    private SurveyReplyService surveyReplyService;
 
     @PostMapping("/novoquestionario")
     public ResponseEntity<?> criarNovoQuestionario(@RequestBody SurveyDTO surveyDTO) {
@@ -49,6 +46,28 @@ public class SurveyController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(surveyService.questionarioById((long) id));
         }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/questionario/resposta")
+    public ResponseEntity<?> responderQuestionario(@RequestParam Long surveyId,
+                                                   @RequestParam Long funcId,
+                                                   @RequestBody List<ReplyDTO> replyList){
+        try{
+            surveyReplyService.salvarResposta(surveyId, funcId, replyList);
+            return ResponseEntity.status(HttpStatus.OK).body("Resposta salva com sucesso!");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    //endpoint para listar os questionários não respondidos por um funcionário específico
+    @GetMapping("/questionarios")
+    public ResponseEntity<?> listarQuestionarios(@RequestParam Long funcId) {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(surveyService.listaQuestionariosNaoRespondidos(funcId));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
