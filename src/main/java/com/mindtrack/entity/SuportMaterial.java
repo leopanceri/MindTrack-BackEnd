@@ -26,10 +26,12 @@ public class SuportMaterial {
     private String content;
     @ElementCollection
     @JoinTable(name="material_links",
-        joinColumns = @JoinColumn(name = "material_id"))
+            joinColumns = @JoinColumn(name = "material_id"))
     @Column(name="links")
     private List<String> links;
-    @Column(name = "arquivo", columnDefinition = "BYTEA")
-    private byte[] file;
+    @Column(name = "nome_arquivo")
+    private String fileName;
+    @Column(name="local_arquivo")
+    private String filePath;
 
 }

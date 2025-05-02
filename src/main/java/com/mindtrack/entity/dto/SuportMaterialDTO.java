@@ -14,4 +14,6 @@ public class SuportMaterialDTO {
     private String title;
     private String content;
     private List<String> links;
+    private String fileName;
+    private String filePath;
 }
