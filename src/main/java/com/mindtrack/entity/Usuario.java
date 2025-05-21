@@ -1,6 +1,7 @@
 package com.mindtrack.entity;
 
 import com.mindtrack.entity.dto.CadastroDTO;
+import com.mindtrack.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Formula;

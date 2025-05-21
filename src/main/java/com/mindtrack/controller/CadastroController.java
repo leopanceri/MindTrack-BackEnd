@@ -7,6 +7,7 @@ import com.mindtrack.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,13 +23,14 @@ public class CadastroController {
     @PostMapping("/cadastro/novo")
     public ResponseEntity<?> novoCadastro(@RequestBody CadastroDTO cadastroDTO){
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrarUsuario(cadastroDTO));
+            return usuarioService.cadastrarUsuario(cadastroDTO);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @GetMapping("/cadastros")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<List<CadastroDTO>> listarCadastros(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(usuarioService.retornaTodosCadastrados());

@@ -4,9 +4,11 @@ import com.mindtrack.entity.Administrador;
 import com.mindtrack.entity.Funcionario;
 import com.mindtrack.entity.Usuario;
 import com.mindtrack.entity.dto.CadastroDTO;
+import com.mindtrack.enums.Status;
 import com.mindtrack.repository.AdministradorRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +18,12 @@ public class AdministradorService {
     @Autowired
     private AdministradorRepository administradorRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public void createAdministrador(Administrador a){
-        a.setSenha("ABC123");
-        a.setStatus("ATIVO");
+        a.setSenha(passwordEncoder.encode("abc123"));
+        a.setStatus("Ativo");
         administradorRepository.save(a);
     }
 
