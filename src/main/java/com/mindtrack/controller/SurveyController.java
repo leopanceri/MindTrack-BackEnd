@@ -7,12 +7,13 @@ import com.mindtrack.services.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class SurveyController {
 
@@ -23,6 +24,7 @@ public class SurveyController {
     private SurveyReplyService surveyReplyService;
 
     @PostMapping("/novoquestionario")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> criarNovoQuestionario(@RequestBody SurveyDTO surveyDTO) {
         try {
             surveyService.crirNovoQuestionario(surveyDTO);
@@ -51,6 +53,7 @@ public class SurveyController {
     }
 
     @PostMapping("/questionario/resposta")
+    @PreAuthorize("hasAuthority('FUNC')")
     public ResponseEntity<?> responderQuestionario(@RequestParam Long surveyId,
                                                    @RequestParam Long funcId,
                                                    @RequestBody List<ReplyDTO> replyList){
@@ -64,6 +67,7 @@ public class SurveyController {
 
     //endpoint para listar os questionários não respondidos por um funcionário específico
     @GetMapping("/questionarios")
+    @PreAuthorize("hasAuthority('FUNC')")
     public ResponseEntity<?> listarQuestionarios(@RequestParam Long funcId) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(surveyService.listaQuestionariosNaoRespondidos(funcId));

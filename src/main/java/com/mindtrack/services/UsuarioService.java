@@ -10,7 +10,9 @@ import com.mindtrack.security.JwtUtils;
 import com.mindtrack.security.UserDetailsImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -72,15 +74,14 @@ public class UsuarioService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
+            ResponseCookie jwtCookie = jwtUtils.generateJwtToken(authentication);
 
             UserDetailsImpl userDetails = (UserDetailsImpl)authentication.getPrincipal();
             List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
-            return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(
+            return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(new LoginResponseDTO(
                     userDetails.getId(),
                     userDetails.getName(),
                     userDetails.getUsername(),
-                    jwt,
                     roles));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ERRO AQUI: " + e.getMessage());
@@ -118,5 +119,10 @@ public class UsuarioService {
         Usuario u = usuarioRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado com o ID: " + id));
         u.setStatus("Inativo");
         usuarioRepository.save(u);
+    }
+
+    public ResponseEntity<?> logoutUser() {
+        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Usuário desconectado com sucesso");
     }
 }
