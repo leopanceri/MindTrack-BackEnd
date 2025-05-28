@@ -21,7 +21,7 @@ public class CadastroController {
 
 
     @PostMapping("/cadastro/novo")
-    //@PreAuthorize("hasAuthority('ADM')")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> novoCadastro(@RequestBody CadastroDTO cadastroDTO){
         try{
             return usuarioService.cadastrarUsuario(cadastroDTO);
@@ -31,7 +31,7 @@ public class CadastroController {
     }
 
     @GetMapping("/cadastros")
-    //@PreAuthorize("hasAuthority('ADM')")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<List<CadastroDTO>> listarCadastros(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(usuarioService.retornaTodosCadastrados());
