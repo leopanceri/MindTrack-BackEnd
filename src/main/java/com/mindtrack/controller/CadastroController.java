@@ -21,7 +21,7 @@ public class CadastroController {
 
 
     @PostMapping("/cadastro/novo")
-    @PreAuthorize("hasAuthority('ADM')")
+    //@PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> novoCadastro(@RequestBody CadastroDTO cadastroDTO){
         try{
             return usuarioService.cadastrarUsuario(cadastroDTO);
