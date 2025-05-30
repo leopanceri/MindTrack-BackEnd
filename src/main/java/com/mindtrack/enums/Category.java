@@ -5,7 +5,7 @@ public enum Category {
 
     private String value;
 
-    private Category(String value) {
+    Category(String value) {
         this.value = value;
     }
 

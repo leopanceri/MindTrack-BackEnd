@@ -5,6 +5,7 @@ import com.mindtrack.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -15,6 +16,7 @@ public class QuestionController {
     private QuestionService questionService;
 
     @PostMapping("/novapergunta")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> novaPergunta(@RequestBody QuestionDTO questionDTO) {
         try {
             questionService.cadastrarNovaPergunta(questionDTO);
@@ -25,6 +27,7 @@ public class QuestionController {
     }
 
     @GetMapping("/listaperguntas")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> listarPerguntas(){
         try {
             return ResponseEntity.status(HttpStatus.OK). body(questionService.listarPerguntas());

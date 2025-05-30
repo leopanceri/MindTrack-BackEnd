@@ -2,10 +2,12 @@ package com.mindtrack.services;
 
 import com.mindtrack.entity.Funcionario;
 import com.mindtrack.entity.dto.CadastroDTO;
+import com.mindtrack.enums.Status;
 import com.mindtrack.repository.FuncionarioRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Funcionario findById(Long id) throws ObjectNotFoundException {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
@@ -26,8 +31,8 @@ public class FuncionarioService {
     }
 
     public Funcionario createFuncionario(Funcionario f) {
-        f.setStatus("ATIVO");
-        f.setSenha("ABC123");
+        f.setStatus("Ativo");
+        f.setSenha(passwordEncoder.encode("123456"));
         return funcionarioRepository.save(f);
     }
 

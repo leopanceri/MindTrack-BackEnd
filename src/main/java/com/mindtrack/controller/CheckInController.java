@@ -6,6 +6,7 @@ import com.mindtrack.services.CheckInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class CheckInController {
     private CheckInService checkInService;
 
     @GetMapping("/historico/{id}")
+    @PreAuthorize("hasAuthority('FUNC')")
     public ResponseEntity<?> getCheckinFuncionario(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(checkInService.findAllByFuncionario(id));
@@ -26,14 +28,9 @@ public class CheckInController {
     }
 
     @PostMapping("/checkin")
+    @PreAuthorize("hasAuthority('FUNC')")
     public void novoCheckin(@RequestBody CheckInDTO checkInDTO) {
         checkInService.crateNewCheckIn(checkInDTO);
     }
-/*
-    @DeleteMapping("/checkin/{id}")
-    public void removercheckin(@PathVariable Long id){
-        checkInService.removerCheckIns(id);
-    }
 
- */
 }

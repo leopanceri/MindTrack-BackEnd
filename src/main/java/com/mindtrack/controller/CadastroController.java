@@ -7,11 +7,12 @@ import com.mindtrack.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class CadastroController {
 
@@ -20,15 +21,17 @@ public class CadastroController {
 
 
     @PostMapping("/cadastro/novo")
+    //@PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> novoCadastro(@RequestBody CadastroDTO cadastroDTO){
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrarUsuario(cadastroDTO));
+            return usuarioService.cadastrarUsuario(cadastroDTO);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @GetMapping("/cadastros")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<List<CadastroDTO>> listarCadastros(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(usuarioService.retornaTodosCadastrados());
@@ -38,6 +41,7 @@ public class CadastroController {
     }
 
     @GetMapping("/cadastros/{id}")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> getUsuario(@PathVariable Long id) {
         try {
             CadastroDTO cadastroDTO = usuarioService.findById(id);
@@ -47,7 +51,8 @@ public class CadastroController {
         }
     }
 
-    @PutMapping("/cadastros/editar") //ainda não está implementado
+    @PutMapping("/cadastros/editar")
+    @PreAuthorize("hasAuthority('ADM')")//ainda não está implementado
     public ResponseEntity<?> atualizaCadastro(@RequestBody CadastroDTO c){
         try{
             usuarioService.atualizaCadastro(c);
@@ -57,6 +62,7 @@ public class CadastroController {
         }
     }
     @DeleteMapping("/cadastros/{id}")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> removerUsuario(@PathVariable Long id){
         try{
             usuarioService.inativaCadastro(id);
