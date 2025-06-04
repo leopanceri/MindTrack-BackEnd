@@ -8,6 +8,7 @@ import com.mindtrack.entity.dto.LoginResponseDTO;
 import com.mindtrack.repository.UsuarioRepository;
 import com.mindtrack.security.JwtUtils;
 import com.mindtrack.security.UserDetailsImpl;
+import com.mindtrack.services.helpers.EmailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -46,25 +45,33 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    PasswordTokenService passworTokenService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<?> cadastrarUsuario(CadastroDTO newCadastro) {
         //if(usuarioRepository.existsByEmail(newCadastro.getEmail()))
           //  return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
         if (Objects.equals(newCadastro.getPerfil(), "Funcionário")) {
             Funcionario func = new Funcionario(newCadastro);
-            funcionarioService.createFuncionario(func);
+            func = funcionarioService.createFuncionario(func);
+            emailService.enviaEmailCadastro(func, "cadastro de nova senha URL");
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(func, CadastroDTO.class));
 
         }else {
             Administrador adm = new Administrador(newCadastro);
-            administradorService.createAdministrador(adm);
+            adm = administradorService.createAdministrador(adm);
+            emailService.enviaEmailCadastro(adm, "cadastro de nova senha URL");
+
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(adm, CadastroDTO.class));
         }
     }
@@ -91,8 +98,6 @@ public class UsuarioService {
    public List<CadastroDTO> retornaTodosCadastrados(){
         List<Usuario> cadastroList = usuarioRepository.findAll();
         return cadastroList.stream().map(e -> mapper.map(e, CadastroDTO.class)).collect(Collectors.toList());
-       //List<CadastroInterface> cadastroList = usuarioRepository.buscarUsuariosCadastrados();
-       //return cadastroList.stream().map(CadastroDTO::new).collect(Collectors.toList());
    }
 
 
@@ -124,5 +129,34 @@ public class UsuarioService {
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Usuário desconectado com sucesso");
+    }
+
+    public void requisitaNovaSenha(String email) {
+        Usuario user = usuarioRepository.findByEmail(email).orElseThrow();
+        passworTokenService.removeTokemExistente(user);
+        String resetLink = passworTokenService.criaLinkResetPassword(user);
+
+        //Seta as variaveis para o template
+        Map<String, Object> templateVariables = new HashMap<>();
+        templateVariables.put("emailTitle", "Recuperação de Senha!");
+        templateVariables.put("userName", user.getNome()); // Supondo que User tem um getName()
+        templateVariables.put("bodyContent", "Recebemos uma solicitação para redefinir a senha da sua conta. " +
+                "Se foi você, clique no botão abaixo para criar uma nova senha." +
+                "Este link é válido por 3 horas após o recebimento desta menságem!");
+        templateVariables.put("linkUrl", resetLink);
+        templateVariables.put("linkText", "Redefinir minha senha");
+        emailService.enviaEmailRecuperaSenha("Redefinição de Senha", "password_email", templateVariables);
+    }
+
+    public boolean cadastraNovaSenha(String token, String novaSenha) {
+        Usuario user = passworTokenService.validaToken(token);
+        if(user != null){
+            user.setSenha(passwordEncoder.encode(novaSenha));
+            usuarioRepository.save(user);
+            passworTokenService.removeTokemExistente(user);
+            return true;
+        }else{
+            return false;
+        }
     }
 }

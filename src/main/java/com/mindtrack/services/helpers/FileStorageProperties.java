@@ -1,4 +1,4 @@
-package com.mindtrack;
+package com.mindtrack.services.helpers;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

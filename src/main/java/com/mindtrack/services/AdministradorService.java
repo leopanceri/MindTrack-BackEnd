@@ -21,10 +21,10 @@ public class AdministradorService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void createAdministrador(Administrador a){
+    public Administrador createAdministrador(Administrador a){
         a.setSenha(passwordEncoder.encode("abc123"));
         a.setStatus("Ativo");
-        administradorRepository.save(a);
+        return administradorRepository.save(a);
     }
 
     public Administrador findById(Long id) {

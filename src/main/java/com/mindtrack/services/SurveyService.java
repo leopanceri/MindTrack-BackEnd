@@ -40,6 +40,7 @@ public class SurveyService {
                 surveyDTO.getDueDate(),
                 surveyDTO.getTitle(),
                 surveyDTO.getDescription(),
+                false,
                 questions,
                 administrador
         );
