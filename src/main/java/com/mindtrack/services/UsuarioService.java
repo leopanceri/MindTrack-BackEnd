@@ -5,9 +5,11 @@ import com.mindtrack.entity.*;
 import com.mindtrack.entity.dto.CadastroDTO;
 import com.mindtrack.entity.dto.LoginRequestDTO;
 import com.mindtrack.entity.dto.LoginResponseDTO;
+import com.mindtrack.enums.Status;
 import com.mindtrack.repository.UsuarioRepository;
 import com.mindtrack.security.JwtUtils;
 import com.mindtrack.security.UserDetailsImpl;
+import com.mindtrack.services.helpers.EmailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,9 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -46,25 +46,37 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     AuthenticationManager authenticationManager;
+
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    PasswordTokenService passworTokenService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<?> cadastrarUsuario(CadastroDTO newCadastro) {
         //if(usuarioRepository.existsByEmail(newCadastro.getEmail()))
           //  return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
         if (Objects.equals(newCadastro.getPerfil(), "Funcionário")) {
             Funcionario func = new Funcionario(newCadastro);
-            funcionarioService.createFuncionario(func);
+            func = funcionarioService.createFuncionario(func);
+            String resetLink = passworTokenService.criaLinkResetPassword(func, 24*60);
+            emailService.enviaEmailCadastro(resetLink, "password_email", func);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(func, CadastroDTO.class));
 
         }else {
             Administrador adm = new Administrador(newCadastro);
-            administradorService.createAdministrador(adm);
+            adm = administradorService.createAdministrador(adm);
+            String resetLink = passworTokenService.criaLinkResetPassword(adm, 24*60);
+            emailService.enviaEmailCadastro(resetLink, "password_email", adm);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(adm, CadastroDTO.class));
         }
     }
@@ -91,8 +103,6 @@ public class UsuarioService {
    public List<CadastroDTO> retornaTodosCadastrados(){
         List<Usuario> cadastroList = usuarioRepository.findAll();
         return cadastroList.stream().map(e -> mapper.map(e, CadastroDTO.class)).collect(Collectors.toList());
-       //List<CadastroInterface> cadastroList = usuarioRepository.buscarUsuariosCadastrados();
-       //return cadastroList.stream().map(CadastroDTO::new).collect(Collectors.toList());
    }
 
 
@@ -117,12 +127,31 @@ public class UsuarioService {
 
     public void inativaCadastro(Long id) {
         Usuario u = usuarioRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado com o ID: " + id));
-        u.setStatus("Inativo");
+        u.setStatus(Status.INATIVO);
         usuarioRepository.save(u);
     }
 
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Usuário desconectado com sucesso");
+    }
+
+    public void requisitaNovaSenha(String email) {
+        Usuario user = usuarioRepository.findByEmail(email).orElseThrow();
+        String resetLink = passworTokenService.criaLinkResetPassword(user, 3*60);
+        emailService.enviaEmailRecuperaSenha(resetLink, "password_email", user);
+    }
+
+    public boolean cadastraNovaSenha(String token, String novaSenha) {
+        Usuario user = passworTokenService.validaToken(token);
+        if(user != null){
+            user.setSenha(passwordEncoder.encode(novaSenha));
+            user.setStatus(Status.ATIVO);
+            usuarioRepository.save(user);
+            passworTokenService.removeTokemExistente(user);
+            return true;
+        }else{
+            return false;
+        }
     }
 }

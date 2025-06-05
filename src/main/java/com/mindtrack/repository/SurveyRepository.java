@@ -11,7 +11,7 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
     @Query("""
     SELECT s FROM Survey s
-    WHERE s.id NOT IN (
+    WHERE s.isPublic = true AND s.id NOT IN (
         SELECT DISTINCT sr.survey.id
         FROM SurveyReply sr
         WHERE sr.funcionario.id = :funcId)

@@ -25,6 +25,8 @@ public class Survey {
     private String title;
     @Column(name= "descricao")
     private String description;
+    @Column(name = "publico")
+    private boolean isPublic;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name= "quest_perguntas", joinColumns = @JoinColumn(name = "id_questionario"),
                 inverseJoinColumns = @JoinColumn(name = "id_pergunta" ))

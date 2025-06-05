@@ -17,6 +17,7 @@ public class SurveyResponseDTO {
     private LocalDate dueDate;
     private String title;
     private String description;
+    private boolean isPublic;
     private List<QuestionDTO> questions;
     private CadastroDTO publisher;
 }

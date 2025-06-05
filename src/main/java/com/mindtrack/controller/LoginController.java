@@ -30,4 +30,22 @@ public class LoginController {
     public ResponseEntity<?> logout(){
         return usuarioService.logoutUser();
     }
+
+    @PostMapping("/esqueci-minha-senha")
+    public ResponseEntity<?> esqueciMinhaSenha(@RequestBody String email){
+        try{
+            usuarioService.requisitaNovaSenha(email);
+            return ResponseEntity.status(HttpStatus.OK).body("Link enviado por email!");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/cadastroSenha")
+    public ResponseEntity<?> cadastroSenha(@RequestParam String token, @RequestBody String novaSenha){
+        if(usuarioService.cadastraNovaSenha(token, novaSenha)){
+            return ResponseEntity.status(HttpStatus.OK).body("Nova Senha Cadastrada!");
+        }else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Token inválido!");
+        }
 }

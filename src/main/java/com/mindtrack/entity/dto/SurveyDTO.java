@@ -17,5 +17,4 @@ public class SurveyDTO {
     private String description;
     private List<Long> questionsId;
     private int admId;
-
 }

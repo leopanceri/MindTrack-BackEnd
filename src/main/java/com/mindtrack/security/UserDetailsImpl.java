@@ -2,6 +2,7 @@ package com.mindtrack.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mindtrack.entity.Usuario;
+import com.mindtrack.enums.Status;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,14 +19,17 @@ public class UserDetailsImpl implements UserDetails {
     @Getter
     private String name;
     private String username;
+    @Getter
+    private boolean status;
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String name,String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Long id, String name,String email, boolean status, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.username = email;
+        this.status = status;
         this.password = password;
         this.authorities = authorities;
     }
@@ -37,10 +41,12 @@ public class UserDetailsImpl implements UserDetails {
         }else{
             authorities = List.of(new SimpleGrantedAuthority("FUNC"));
         }
+        boolean isUserEnabled = (usuario.getStatus() == Status.ATIVO);
         return new UserDetailsImpl(
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail(),
+                isUserEnabled,
                 usuario.getSenha(),
                 authorities);
     }
@@ -79,7 +85,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.status;
     }
 
     @Override

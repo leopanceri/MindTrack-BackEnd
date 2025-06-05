@@ -1,6 +1,6 @@
 package com.mindtrack.services;
 
-import com.mindtrack.FileStorageProperties;
+import com.mindtrack.services.helpers.FileStorageProperties;
 import com.mindtrack.entity.SuportMaterial;
 import com.mindtrack.entity.dto.SuportMaterialDTO;
 import com.mindtrack.repository.SuportMaterialRepository;
@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service

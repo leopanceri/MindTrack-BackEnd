@@ -31,7 +31,7 @@ public class FuncionarioService {
     }
 
     public Funcionario createFuncionario(Funcionario f) {
-        f.setStatus("Ativo");
+        f.setStatus(Status.ATIVO);
         f.setSenha(passwordEncoder.encode("123456"));
         return funcionarioRepository.save(f);
     }

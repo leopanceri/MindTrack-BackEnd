@@ -27,7 +27,8 @@ public class Usuario {
     @Column (name="cargo")
     private String cargo;
     @Column (name="status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @Column (name="senha")
     private String senha;
     @Formula("perfil")
