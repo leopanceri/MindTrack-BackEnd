@@ -5,6 +5,7 @@ import com.mindtrack.entity.*;
 import com.mindtrack.entity.dto.CadastroDTO;
 import com.mindtrack.entity.dto.LoginRequestDTO;
 import com.mindtrack.entity.dto.LoginResponseDTO;
+import com.mindtrack.enums.Status;
 import com.mindtrack.repository.UsuarioRepository;
 import com.mindtrack.security.JwtUtils;
 import com.mindtrack.security.UserDetailsImpl;
@@ -46,6 +47,7 @@ public class UsuarioService {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -64,13 +66,16 @@ public class UsuarioService {
         if (Objects.equals(newCadastro.getPerfil(), "Funcionário")) {
             Funcionario func = new Funcionario(newCadastro);
             func = funcionarioService.createFuncionario(func);
-            emailService.enviaEmailCadastro(func, "cadastro de nova senha URL");
+            String resetLink = passworTokenService.criaLinkResetPassword(func, 24*60);
+            emailService.enviaEmailCadastro(resetLink, "password_email", func);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(func, CadastroDTO.class));
 
         }else {
             Administrador adm = new Administrador(newCadastro);
             adm = administradorService.createAdministrador(adm);
-            emailService.enviaEmailCadastro(adm, "cadastro de nova senha URL");
+            String resetLink = passworTokenService.criaLinkResetPassword(adm, 24*60);
+            emailService.enviaEmailCadastro(resetLink, "password_email", adm);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(adm, CadastroDTO.class));
         }
@@ -122,7 +127,7 @@ public class UsuarioService {
 
     public void inativaCadastro(Long id) {
         Usuario u = usuarioRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado com o ID: " + id));
-        u.setStatus("Inativo");
+        u.setStatus(Status.INATIVO);
         usuarioRepository.save(u);
     }
 
@@ -133,25 +138,15 @@ public class UsuarioService {
 
     public void requisitaNovaSenha(String email) {
         Usuario user = usuarioRepository.findByEmail(email).orElseThrow();
-        passworTokenService.removeTokemExistente(user);
-        String resetLink = passworTokenService.criaLinkResetPassword(user);
-
-        //Seta as variaveis para o template
-        Map<String, Object> templateVariables = new HashMap<>();
-        templateVariables.put("emailTitle", "Recuperação de Senha!");
-        templateVariables.put("userName", user.getNome()); // Supondo que User tem um getName()
-        templateVariables.put("bodyContent", "Recebemos uma solicitação para redefinir a senha da sua conta. " +
-                "Se foi você, clique no botão abaixo para criar uma nova senha." +
-                "Este link é válido por 3 horas após o recebimento desta menságem!");
-        templateVariables.put("linkUrl", resetLink);
-        templateVariables.put("linkText", "Redefinir minha senha");
-        emailService.enviaEmailRecuperaSenha("Redefinição de Senha", "password_email", templateVariables);
+        String resetLink = passworTokenService.criaLinkResetPassword(user, 3*60);
+        emailService.enviaEmailRecuperaSenha(resetLink, "password_email", user);
     }
 
     public boolean cadastraNovaSenha(String token, String novaSenha) {
         Usuario user = passworTokenService.validaToken(token);
         if(user != null){
             user.setSenha(passwordEncoder.encode(novaSenha));
+            user.setStatus(Status.ATIVO);
             usuarioRepository.save(user);
             passworTokenService.removeTokemExistente(user);
             return true;

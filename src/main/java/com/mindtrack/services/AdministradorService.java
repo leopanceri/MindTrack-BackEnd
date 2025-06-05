@@ -23,7 +23,7 @@ public class AdministradorService {
 
     public Administrador createAdministrador(Administrador a){
         a.setSenha(passwordEncoder.encode("abc123"));
-        a.setStatus("Ativo");
+        a.setStatus(Status.ATIVO);
         return administradorRepository.save(a);
     }
 

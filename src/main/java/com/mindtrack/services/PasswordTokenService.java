@@ -16,12 +16,13 @@ public class PasswordTokenService {
     @Autowired
     PasswordResetTokenRepository passwordResetTokenRepository;
 
-    public String criaLinkResetPassword(Usuario usuario) {
+    public String criaLinkResetPassword(Usuario usuario, int minutes) {
+        this.removeTokemExistente(usuario);
         String token = UUID.randomUUID().toString();
-        Date expiryDate = calculaValidadeToken(3 * 60);
+        Date expiryDate = calculaValidadeToken(minutes);
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, usuario, expiryDate);
         passwordResetTokenRepository.save(passwordResetToken);
-        return "localhost:4200/auth/nova-senha?token=" + token;
+        return "http://localhost:4200/login/nova-senha?token=" + token;
     }
 
     public void removeTokemExistente(Usuario usuario){
