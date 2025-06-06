@@ -34,7 +34,7 @@ public class AuthenticationController {
     public ResponseEntity<?> esqueciMinhaSenha(@RequestBody String email){
         try{
             authService.requisitaNovaSenha(email);
-            return ResponseEntity.status(HttpStatus.OK).body("Link enviado por email!");
+            return ResponseEntity.status(HttpStatus.OK).body("Um link para recuperação foi enviado por email!");
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

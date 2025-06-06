@@ -35,7 +35,7 @@ public class AuthenticationService {
     @Autowired
     EmailService emailService;
     @Autowired
-    PasswordTokenService passworTokenService;
+    PasswordTokenService passwordTokenService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -66,17 +66,17 @@ public class AuthenticationService {
 
     public void requisitaNovaSenha(String email) {
         Usuario user = usuarioRepository.findByEmail(email).orElseThrow();
-        String resetLink = passworTokenService.criaLinkResetPassword(user, 3*60);
+        String resetLink = passwordTokenService.criaLinkResetPassword(user, 3*60);
         emailService.enviaEmailRecuperaSenha(resetLink, "password_email", user);
     }
 
     public boolean cadastraNovaSenha(String token, String novaSenha) {
-        Usuario user = passworTokenService.validaToken(token);
+        Usuario user = passwordTokenService.validaToken(token);
         if(user != null){
             user.setSenha(passwordEncoder.encode(novaSenha));
             user.setStatus(Status.ATIVO);
             usuarioRepository.save(user);
-            passworTokenService.removeTokemExistente(user);
+            passwordTokenService.removeTokemExistente(user);
             return true;
         }else{
             return false;

@@ -1,6 +1,5 @@
 package com.mindtrack.controller;
 
-import com.mindtrack.entity.Funcionario;
 import com.mindtrack.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +22,15 @@ public class FuncionarioController {
     }
 
     @GetMapping("/funcionarios")
-    public ResponseEntity<?> obterTodosUsuarios(){
+    public ResponseEntity<?> obterTodosFuncionarios(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(funcionarioService.findAll());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getClass());
         }
     }
+
+    /*
 
     @DeleteMapping("/funcionarios/{id}")
     public ResponseEntity<?> deletarFuncionario(@PathVariable Long id){
@@ -40,4 +41,6 @@ public class FuncionarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getClass());
         }
     }
+
+     */
 }
