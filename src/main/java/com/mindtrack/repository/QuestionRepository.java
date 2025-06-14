@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    @Query("SELECT p FROM Question p JOIN FETCH p.opcoes ")
+    @Query("SELECT p FROM Question p LEFT JOIN FETCH p.opcoes ORDER BY p.id")
     List<Question> findAllWithOpts();
 }

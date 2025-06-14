@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Opcao {
+public class OpcaoResposta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,13 @@ public class Opcao {
     @JoinColumn(name = "pergunta_id")
     private Question pergunta;
 
-    public Opcao(OpcaoDTO opcaoDTO, Question pergunta) {
+    public OpcaoResposta(OpcaoDTO opcaoDTO, Question pergunta) {
         this.textoOpcao = opcaoDTO.getTextoOpcao();
         this.valor = opcaoDTO.getValor();
         this.pergunta = pergunta;
+    }
+
+    public OpcaoResposta(Long opcaoId) {
+        this.id = opcaoId;
     }
 }

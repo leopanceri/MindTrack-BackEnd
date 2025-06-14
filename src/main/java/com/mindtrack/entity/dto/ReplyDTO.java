@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReplyDTO {
 
-    private Long questionId;
-    private Integer reply;
+    private Long perguntaId;
+    private Long opcaoId;
+    private String texto;
 }

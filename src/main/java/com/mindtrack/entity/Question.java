@@ -26,7 +26,7 @@ public class Question {
     @Column (name="texto")
     private String text;
     @OneToMany(mappedBy = "pergunta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Opcao> opcoes = new ArrayList<>();
+    private List<OpcaoResposta> opcoes = new ArrayList<>();
 
     public Question(Long questionId) {
         this.id = questionId;

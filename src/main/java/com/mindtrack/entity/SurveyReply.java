@@ -26,7 +26,10 @@ public class SurveyReply {
     @JoinColumn(name = "id_pergunta", nullable = false)
     private Question question;
 
-    @Column(name="resposta", nullable = false)
-    private Integer reply;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_op_resposta", nullable = true)
+    private OpcaoResposta resposta;
+
+    private String resposta_aberta;
 
 }

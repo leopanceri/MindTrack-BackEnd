@@ -1,6 +1,6 @@
 package com.mindtrack.services;
 
-import com.mindtrack.entity.Opcao;
+import com.mindtrack.entity.OpcaoResposta;
 import com.mindtrack.entity.Question;
 import com.mindtrack.entity.dto.QuestionDTO;
 import com.mindtrack.enums.converters.CategoryConverter;
@@ -23,15 +23,15 @@ public class QuestionService {
 
     private final CategoryConverter categoryConverter = new CategoryConverter();
 
-    public void cadastrarNovaPergunta(QuestionDTO questionDTO) {
+    public QuestionDTO cadastrarNovaPergunta(QuestionDTO questionDTO) {
         Question question = new Question(categoryConverter.convertToEntityAttribute(questionDTO.getCategory()), questionDTO.getText(),
                 questionDTO.getTipo());
 
         questionDTO.getOpcoes().forEach(optDTO ->{
-            Opcao opc = new Opcao(optDTO, question);
+            OpcaoResposta opc = new OpcaoResposta(optDTO, question);
             question.getOpcoes().add(opc);
         });
-        questionRepository.save(question);
+        return questionMapper.map (questionRepository.save(question),QuestionDTO.class) ;
     }
 
     public List<QuestionDTO> listarPerguntas() {
