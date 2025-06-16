@@ -19,10 +19,10 @@ public class QuestionController {
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> novaPergunta(@RequestBody QuestionDTO questionDTO) {
         try {
-            questionService.cadastrarNovaPergunta(questionDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Pergunta criada com sucesso!");
+            //questionService.cadastrarNovaPergunta(questionDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(questionService.cadastrarNovaPergunta(questionDTO));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar Pergunta!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

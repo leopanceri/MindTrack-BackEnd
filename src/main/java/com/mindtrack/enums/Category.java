@@ -2,7 +2,7 @@ package com.mindtrack.enums;
 
 public enum Category {
     CONTENT("Satisfação"), AGREEMENT("Concordância"), IMPORTANCE("Importância"),
-    PROBABILITY("Probabilidade"), FREQUENCY("Frequência");
+    PROBABILITY("Probabilidade"), FREQUENCY("Frequência"), OUTRA("Outra");
 
     private String value;
 
