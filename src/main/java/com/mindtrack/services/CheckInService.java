@@ -8,14 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class CheckInService {
+
     @Autowired
     private CheckInRepository checkInRepository;
 
@@ -23,10 +20,12 @@ public class CheckInService {
     private FuncionarioService funcionarioService;
 
     public List<CheckIn> listaCheckInFuncionario(int idFuncionario) throws ObjectNotFoundException {
-        return checkInRepository.findByFuncionarioOrderByDateTime(funcionarioService.findById((long) idFuncionario));
+        return checkInRepository.findByFuncionarioOrderByDateTime(
+                funcionarioService.findById((long) idFuncionario)
+        );
     }
 
-    public void novoCheckIn (CheckInDTO checkInDTO) {
+    public void novoCheckIn(CheckInDTO checkInDTO) {
         CheckIn checkIn = new CheckIn();
         checkIn.setDateTime(LocalDateTime.now());
         checkIn.setHumorLevel(checkInDTO.getHumorLevel());
@@ -35,8 +34,8 @@ public class CheckInService {
         checkInRepository.save(checkIn);
     }
 
-    public List<Map<String, Object>> obterMediaPorSetor() {
-        List<Object[]> resultados = checkInRepository.obterMediaPorSetor();
+    public List<Map<String, Object>> obterMediaPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        List<Object[]> resultados = checkInRepository.obterMediaPorSetor(dataInicial, dataFinal);
 
         List<Map<String, Object>> lista = new ArrayList<>();
         for (Object[] row : resultados) {
@@ -48,10 +47,10 @@ public class CheckInService {
         return lista;
     }
 
-    public List<Map<String, Object>> obterQuantidadePorNota() {
-    List<Object[]> resultados = checkInRepository.obterQuantidadePorNota();
+    public List<Map<String, Object>> obterPercentualPorNota(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        List<Object[]> resultados = checkInRepository.obterPercentualPorNota(dataInicial, dataFinal);
 
-    List<Map<String, Object>> lista = new ArrayList<>();
+        List<Map<String, Object>> lista = new ArrayList<>();
         for (Object[] row : resultados) {
             Map<String, Object> map = new HashMap<>();
             map.put("nota", row[0]);
@@ -60,11 +59,11 @@ public class CheckInService {
         }
         return lista;
     }
-    
-    public List<Map<String, Object>> obterPercentualNegativoPorSetor() {
-        List<Object[]> resultados = checkInRepository.obterPercentualNegativoPorSetor();
-        List<Map<String, Object>> lista = new ArrayList<>();
 
+    public List<Map<String, Object>> obterPercentualNegativoPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        List<Object[]> resultados = checkInRepository.obterPercentualNegativoPorSetor(dataInicial, dataFinal);
+
+        List<Map<String, Object>> lista = new ArrayList<>();
         for (Object[] resultado : resultados) {
             Map<String, Object> item = new HashMap<>();
             item.put("setor", resultado[0]);
@@ -74,10 +73,10 @@ public class CheckInService {
         return lista;
     }
 
-    public List<Map<String, Object>> obterPercentualRespondentesPorSetor() {
-        List<Object[]> resultados = checkInRepository.obterPercentualRespondentesPorSetor();
-        List<Map<String, Object>> lista = new ArrayList<>();
+    public List<Map<String, Object>> obterPercentualRespondentesPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        List<Object[]> resultados = checkInRepository.obterPercentualRespondentesPorSetor(dataInicial, dataFinal);
 
+        List<Map<String, Object>> lista = new ArrayList<>();
         for (Object[] resultado : resultados) {
             Map<String, Object> item = new HashMap<>();
             item.put("setor", resultado[0]);
