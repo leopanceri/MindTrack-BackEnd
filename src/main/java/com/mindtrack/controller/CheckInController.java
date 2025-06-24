@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/checkin")
 public class CheckInController {
@@ -31,7 +31,7 @@ public class CheckInController {
         }
     }
 
-    @PostMapping("/checkin")
+    @PostMapping("/novo")
     @PreAuthorize("hasAuthority('FUNC')")
     public void novoCheckin(@RequestBody CheckInDTO checkInDTO) {
         checkInService.novoCheckIn(checkInDTO);

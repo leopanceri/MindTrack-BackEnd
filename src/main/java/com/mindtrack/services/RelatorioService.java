@@ -44,8 +44,7 @@ public class RelatorioService {
             respostaMap.put("resposta", 
                 resposta.getResposta_aberta() != null && !resposta.getResposta_aberta().isEmpty() 
                 ? resposta.getResposta_aberta()
-                        :resposta.getResposta().getTextoOpcao());
-                //: String.valueOf(resposta.getResposta()));  // Trata tanto resposta aberta quanto numérica
+                : String.valueOf(resposta.getResposta()));  // Trata tanto resposta aberta quanto numérica
             return respostaMap;
         }).toList();
 

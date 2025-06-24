@@ -44,6 +44,7 @@ public class UsuarioService {
         if (Objects.equals(newCadastro.getPerfil(), "Funcionário")) {
             Funcionario func = new Funcionario(newCadastro);
             func = funcionarioService.createFuncionario(func);
+            func.setPerfil("Funcionário");
             String resetLink = passwordTokenService.criaLinkResetPassword(func, 24*60);
             emailService.enviaEmailCadastro(resetLink, "password_email", func);
 
@@ -60,7 +61,7 @@ public class UsuarioService {
     }
 
    public List<CadastroDTO> retornaTodosCadastrados(){
-        List<Usuario> cadastroList = usuarioRepository.findAll();
+        List<Usuario> cadastroList = usuarioRepository.buscarTodosExcetoStatus(Status.INATIVO);
         return cadastroList.stream().map(e -> mapper.map(e, CadastroDTO.class)).collect(Collectors.toList());
    }
 
@@ -72,11 +73,11 @@ public class UsuarioService {
         return mapper.map(usuario.get(), CadastroDTO.class);
     }    
 
-    public void atualizaCadastro(CadastroDTO c) {
+    public CadastroDTO atualizaCadastro(CadastroDTO c) {
         if(Objects.equals(c.getPerfil(), "Funcionário")) {
-            funcionarioService.updateFuncionario(c);
+            return mapper.map(funcionarioService.updateFuncionario(c), CadastroDTO.class);
         } else if (Objects.equals(c.getPerfil(), "Administrador")) {
-            administradorService.updateAdministrador(c);
+            return mapper.map(administradorService.updateAdministrador(c), CadastroDTO.class);
         }else{
             throw new RuntimeException("Perfil informado é inválido!");
         }
