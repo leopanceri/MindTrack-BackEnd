@@ -1,6 +1,5 @@
 package com.mindtrack.entity.dto;
 
-import com.mindtrack.entity.Question;
 import lombok.*;
 
 import java.util.List;
@@ -8,12 +7,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionDTO {
+public class PerguntaDTO {
 
     private Long id;
-    private String category;
+    private Long idTema;
     private String tipo;
-    private String text;
+    private String texto;
     private List<OpcaoDTO> opcoes;
 
     /*

@@ -32,12 +32,13 @@ public class CheckInController {
     }
 
     @PostMapping("/checkin")
-    @PreAuthorize("hasAuthority('FUNC')")
+    //@PreAuthorize("hasAuthority('FUNC')")
     public void novoCheckin(@RequestBody CheckInDTO checkInDTO) {
         checkInService.novoCheckIn(checkInDTO);
     }
 
     @GetMapping("/media-por-setor")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<List<Map<String, Object>>> obterMediaPorSetor(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
@@ -45,6 +46,7 @@ public class CheckInController {
     }
 
     @GetMapping("/percentual-por-nota")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<List<Map<String, Object>>> obterPercentualPorNota(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
@@ -52,6 +54,7 @@ public class CheckInController {
     }
 
     @GetMapping("/percentual-negativo-por-setor")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<List<Map<String, Object>>> obterPercentualNegativoPorSetor(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
@@ -59,6 +62,7 @@ public class CheckInController {
     }
 
     @GetMapping("/percentual-respondentes-por-setor")
+    @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<List<Map<String, Object>>> obterPercentualRespondentesPorSetor(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {

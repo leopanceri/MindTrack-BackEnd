@@ -1,7 +1,5 @@
 package com.mindtrack.entity;
 
-import com.mindtrack.enums.Category;
-import com.mindtrack.enums.converters.CategoryConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,28 +11,29 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name ="perguntas")
-public class Question {
+public class Pergunta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="id")
     private Long id;
-    @Column (name= "categoria")
-    @Convert(converter = CategoryConverter.class)
-    private Category category;
-    @Column (name="tipo")
+    @ManyToOne
+    @JoinColumn(name="id_tema", nullable=false)
+    private TemaPergunta tema;
+    @Column (nullable=false, length = 25)
     private String tipo;
-    @Column (name="texto")
-    private String text;
+    @Column (nullable=false)
+    private String texto;
     @OneToMany(mappedBy = "pergunta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OpcaoResposta> opcoes = new ArrayList<>();
 
-    public Question(Long questionId) {
+    /*
+    public Pergunta(Long questionId) {
         this.id = questionId;
     }
+     */
 
-    public Question(Category category, String text, String tipo) {
-        this.category = category;
-        this.text = text;
+    public Pergunta(TemaPergunta tema, String texto, String tipo) {
+        this.tema = tema;
+        this.texto = texto;
         this.tipo = tipo;
     }
 }

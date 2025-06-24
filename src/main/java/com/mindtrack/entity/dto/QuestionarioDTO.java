@@ -10,11 +10,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SurveyDTO {
-    private LocalDate publicationDate;
-    private LocalDate dueDate;
-    private String title;
-    private String description;
-    private List<Long> questionsId;
+public class QuestionarioDTO {
+    private LocalDate dataPublicacao;
+    private LocalDate dataValidade;
+    private String titulo;
+    private String descricao;
+    private List<Long> perguntasId;
     private int admId;
+    private boolean publico;
 }
+
+

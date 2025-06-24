@@ -31,17 +31,17 @@ public class SurveyReplyService {
     @Transactional
     public void salvarResposta(Long surveyId, Long funcionarioId, List<ReplyDTO> replies){
         Funcionario funcionario = funcionarioService.findById(funcionarioId);
-        Survey survey = surveyService.findSurveyById(surveyId);
+        Questionario questionario = surveyService.findSurveyById(surveyId);
 
-        List<SurveyReply> replyList = new ArrayList<>();
+        List<RespostaQuestionario> replyList = new ArrayList<>();
 
         for (ReplyDTO dto : replies) {
-            SurveyReply reply = new SurveyReply();
+            RespostaQuestionario reply = new RespostaQuestionario();
             reply.setFuncionario(funcionario);
-            reply.setSurvey(survey);
-            Question question = questionRepository.findById(dto.getPerguntaId())
+            reply.setQuestionario(questionario);
+            Pergunta pergunta = questionRepository.findById(dto.getPerguntaId())
                     .orElseThrow(() -> new RuntimeException("Pergunta não encontrada com id: " + dto.getPerguntaId()));
-            reply.setQuestion(question);
+            reply.setPergunta(pergunta);
             if (dto.getOpcaoId() != null){
                 OpcaoResposta opcao = opcaoRepository.findById(dto.getOpcaoId())
                         .orElseThrow(() -> new RuntimeException("Opção de resposta não encontrada com id: " + dto.getPerguntaId()));

@@ -1,9 +1,9 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.Administrador;
-import com.mindtrack.entity.Question;
-import com.mindtrack.entity.Survey;
-import com.mindtrack.entity.dto.SurveyDTO;
+import com.mindtrack.entity.Pergunta;
+import com.mindtrack.entity.Questionario;
+import com.mindtrack.entity.dto.QuestionarioDTO;
 import com.mindtrack.entity.dto.SurveyResponseDTO;
 import com.mindtrack.repository.SurveyRepository;
 import org.modelmapper.ModelMapper;
@@ -31,25 +31,25 @@ public class SurveyService {
     AdministradorService administradorService;
 
 
-    public void crirNovoQuestionario(SurveyDTO surveyDTO) {
-        List<Question> questions = questionService.listarTodasPerguntasPorId(surveyDTO.getQuestionsId());
-        Administrador administrador = administradorService.findById((long) surveyDTO.getAdmId());
-        Survey survey = new Survey(
+    public void crirNovoQuestionario(QuestionarioDTO questionarioDTO) {
+        List<Pergunta> perguntas = questionService.listarTodasPerguntasPorId(questionarioDTO.getPerguntasId());
+        Administrador administrador = administradorService.findById((long) questionarioDTO.getAdmId());
+        Questionario questionario = new Questionario(
                 null,
-                surveyDTO.getPublicationDate(),
-                surveyDTO.getDueDate(),
-                surveyDTO.getTitle(),
-                surveyDTO.getDescription(),
+                questionarioDTO.getDataPublicacao(),
+                questionarioDTO.getDataValidade(),
+                questionarioDTO.getTitulo(),
+                questionarioDTO.getDescricao(),
                 false,
-                questions,
+                perguntas,
                 administrador
         );
-        surveyRepository.save(survey);
+        surveyRepository.save(questionario);
     }
 
     public List<SurveyResponseDTO> listaQuestionarios() {
-        List<Survey> surveys = surveyRepository.findAll();
-        return surveys.stream().map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).collect(Collectors.toList());
+        List<Questionario> questionarios = surveyRepository.findAll();
+        return questionarios.stream().map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).collect(Collectors.toList());
     }
 
     public SurveyResponseDTO questionarioById(Long id) {
@@ -57,15 +57,19 @@ public class SurveyService {
                 orElseThrow(()->new RuntimeException("Questionário não encontrado!"));
     }
 
-    public Survey findSurveyById(Long id) {
+    public Questionario findSurveyById(Long id) {
         return surveyRepository.findById(id).orElseThrow(()->new RuntimeException("Questionário não encontrado 2!"));
     }
 
     public List<SurveyResponseDTO> listaQuestionariosNaoRespondidos(Long funcionarioId) {
-        List<Survey> surveys = surveyRepository.findQuestionariosNaoRespondidosPorUsuario(funcionarioId);
-        if (surveys.isEmpty()) {
+        List<Questionario> questionarios = surveyRepository.findQuestionariosNaoRespondidosPorUsuario(funcionarioId);
+        if (questionarios.isEmpty()) {
             throw new NoSuchElementException("Nenhum questionário disponível para o funcionário informado.");
         }
-        return surveys.stream().map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).collect(Collectors.toList());
+        return questionarios.stream().map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).collect(Collectors.toList());
+    }
+
+    public void removerQuestionario(Long id) {
+        surveyRepository.deleteById(id);
     }
 }
