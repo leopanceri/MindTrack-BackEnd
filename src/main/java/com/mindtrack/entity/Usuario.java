@@ -16,20 +16,20 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
     private Long id;
-    @Column (name="cpf")
+    @Column (name="cpf", nullable=false)
     private String cpf;
-    @Column (name="nome")
+    @Column (name="nome", nullable=false, length=50)
     private String nome;
-    @Column (name="email")
+    @Column (name="email", nullable=false, unique = true, length=50)
     private String email;
-    @Column (name="setor")
+    @Column (name="setor", nullable=false, length=50)
     private String setor;
-    @Column (name="cargo")
+    @Column (name="cargo", nullable=false, length=50)
     private String cargo;
-    @Column (name="status")
+    @Column (name="status", nullable=false)
     @Enumerated(EnumType.STRING)
     private Status status;
-    @Column (name="senha")
+    @Column (name="senha", nullable=false)
     private String senha;
     @Formula("perfil")
     private String perfil;

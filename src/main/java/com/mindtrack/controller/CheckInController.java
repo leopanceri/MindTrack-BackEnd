@@ -32,7 +32,7 @@ public class CheckInController {
     }
 
     @PostMapping("/checkin")
-    //@PreAuthorize("hasAuthority('FUNC')")
+    @PreAuthorize("hasAuthority('FUNC')")
     public void novoCheckin(@RequestBody CheckInDTO checkInDTO) {
         checkInService.novoCheckIn(checkInDTO);
     }

@@ -20,9 +20,10 @@ public class SuportMaterial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @Column(name="titulo")
+    @Column(name="titulo", nullable=false)
     private String title;
-    @Column(name="conteudo")
+    @Lob
+    @Column(name="conteudo", nullable = false, columnDefinition = "TEXT")
     private String content;
     @ElementCollection
     @JoinTable(name="material_links",
