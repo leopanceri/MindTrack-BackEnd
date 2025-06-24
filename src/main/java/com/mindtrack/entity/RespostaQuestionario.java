@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "respostas_questionarios")
-public class SurveyReply {
+public class RespostaQuestionario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +20,11 @@ public class SurveyReply {
 
     @ManyToOne
     @JoinColumn(name = "id_questionario", nullable = false)
-    private Survey survey;
+    private Questionario questionario;
 
     @ManyToOne
     @JoinColumn(name = "id_pergunta", nullable = false)
-    private Question question;
+    private Pergunta pergunta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_op_resposta", nullable = true)

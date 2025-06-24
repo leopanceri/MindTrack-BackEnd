@@ -24,9 +24,9 @@ public class OpcaoResposta {
     // Muitas opções pertencem a uma pergunta.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pergunta_id")
-    private Question pergunta;
+    private Pergunta pergunta;
 
-    public OpcaoResposta(OpcaoDTO opcaoDTO, Question pergunta) {
+    public OpcaoResposta(OpcaoDTO opcaoDTO, Pergunta pergunta) {
         this.textoOpcao = opcaoDTO.getTextoOpcao();
         this.valor = opcaoDTO.getValor();
         this.pergunta = pergunta;

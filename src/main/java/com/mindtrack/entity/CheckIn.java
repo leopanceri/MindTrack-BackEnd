@@ -13,14 +13,14 @@ public class CheckIn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
     private Long id;
-    @Column (name="data_hora")
+    @Column (name="data_hora", nullable=false)
     private LocalDateTime dateTime;
-    @Column (name="nivel_humor")
+    @Column (name="nivel_humor", nullable=false)
     private int humorLevel;
     @Column (name="comentario")
     private String comment;
     @ManyToOne
-    @JoinColumn(name="id_funcionario")
+    @JoinColumn(name="id_funcionario", nullable=false)
     private Funcionario funcionario;
 
     public CheckIn() {

@@ -1,7 +1,7 @@
 package com.mindtrack.controller;
 
 import com.mindtrack.entity.dto.ReplyDTO;
-import com.mindtrack.entity.dto.SurveyDTO;
+import com.mindtrack.entity.dto.QuestionarioDTO;
 import com.mindtrack.services.SurveyReplyService;
 import com.mindtrack.services.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ public class SurveyController {
 
     @PostMapping("/novoquestionario")
     @PreAuthorize("hasAuthority('ADM')")
-    public ResponseEntity<?> criarNovoQuestionario(@RequestBody SurveyDTO surveyDTO) {
+    public ResponseEntity<?> criarNovoQuestionario(@RequestBody QuestionarioDTO questionarioDTO) {
         try {
-            surveyService.crirNovoQuestionario(surveyDTO);
+            surveyService.crirNovoQuestionario(questionarioDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Questionário criado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao criar questionário: " + e.getMessage());
@@ -61,6 +61,17 @@ public class SurveyController {
             surveyReplyService.salvarResposta(surveyId, funcId, replyList);
             return ResponseEntity.status(HttpStatus.OK).body("Resposta salva com sucesso!");
         }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/questionarios/{id}")
+    @PreAuthorize("hasAuthority('ADM')")
+    public ResponseEntity<?> deletarQuestionario(@PathVariable Long id) {
+        try {
+            this.surveyService.removerQuestionario(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

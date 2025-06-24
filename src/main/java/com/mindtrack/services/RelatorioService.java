@@ -11,8 +11,8 @@ import com.mindtrack.repository.SurveyRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import com.mindtrack.entity.Survey;
-import com.mindtrack.entity.SurveyReply;
+import com.mindtrack.entity.Questionario;
+import com.mindtrack.entity.RespostaQuestionario;
 import com.mindtrack.repository.SurveyReplayRepository;
 
 @Service
@@ -30,28 +30,28 @@ public class RelatorioService {
     }
 
     public Map<String, Object> gerarRelatorioQuestionario(Long surveyId) {
-        Survey survey = surveyRepository.findById(surveyId)
+        Questionario questionario = surveyRepository.findById(surveyId)
             .orElseThrow(() -> new EntityNotFoundException("Questionário não encontrado"));
 
-        long totalRespostas = SurveyReplayRepository.countBySurvey(survey);
+        long totalRespostas = SurveyReplayRepository.countByQuestionario(questionario);
 
-        List<SurveyReply> respostas = SurveyReplayRepository.findBySurveyId(surveyId);
+        List<RespostaQuestionario> respostas = SurveyReplayRepository.findByQuestionarioId(surveyId);
 
         List<Map<String, Object>> respostasDTO = respostas.stream().map(resposta -> {
             Map<String, Object> respostaMap = new HashMap<>();
             respostaMap.put("nomeFuncionario", resposta.getFuncionario().getNome());
-            respostaMap.put("pergunta", resposta.getQuestion().getText());  // <-- Aqui é 'texto'!
+            respostaMap.put("pergunta", resposta.getPergunta().getTexto());  // <-- Aqui é 'texto'!
             respostaMap.put("resposta", 
                 resposta.getResposta_aberta() != null && !resposta.getResposta_aberta().isEmpty() 
-                ? resposta.getResposta_aberta() 
+                ? resposta.getResposta_aberta()
                 : String.valueOf(resposta.getResposta()));  // Trata tanto resposta aberta quanto numérica
             return respostaMap;
         }).toList();
 
         Map<String, Object> relatorio = new HashMap<>();
-        relatorio.put("titulo", survey.getTitle());
-        relatorio.put("dataPublicacao", survey.getPublicationDate());
-        relatorio.put("dataValidade", survey.getDueDate());
+        relatorio.put("titulo", questionario.getTitulo());
+        relatorio.put("dataPublicacao", questionario.getDataPublicacao());
+        relatorio.put("dataValidade", questionario.getDataValidade());
         relatorio.put("quantidadeRespostas", totalRespostas);
         relatorio.put("respostas", respostasDTO); // <-- Inclui respostas aqui!
 

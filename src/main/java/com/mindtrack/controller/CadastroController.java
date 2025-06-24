@@ -32,11 +32,11 @@ public class CadastroController {
 
     @GetMapping("/cadastros")
     @PreAuthorize("hasAuthority('ADM')")
-    public ResponseEntity<List<CadastroDTO>> listarCadastros(){
+    public ResponseEntity<?> listarCadastros(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(usuarioService.retornaTodosCadastrados());
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -55,8 +55,8 @@ public class CadastroController {
     @PreAuthorize("hasAuthority('ADM')")//ainda não está implementado
     public ResponseEntity<?> atualizaCadastro(@RequestBody CadastroDTO c){
         try{
-            usuarioService.atualizaCadastro(c);
-            return ResponseEntity.status(HttpStatus.OK).body("Cadastro atualizado com sucesso!");
+
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioService.atualizaCadastro(c));
         }catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro na atualização cadastral");
         }
@@ -66,7 +66,7 @@ public class CadastroController {
     public ResponseEntity<?> removerUsuario(@PathVariable Long id){
         try{
             usuarioService.inativaCadastro(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuário removido com sucesso!");
+            return ResponseEntity.status(HttpStatus.OK).build();
         }catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

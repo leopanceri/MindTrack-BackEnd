@@ -13,11 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 public class SurveyResponseDTO {
     private Long id;
-    private LocalDate publicationDate;
-    private LocalDate dueDate;
-    private String title;
-    private String description;
-    private boolean isPublic;
-    private List<QuestionDTO> questions;
-    private CadastroDTO publisher;
+    private LocalDate dataPublicacao;
+    private LocalDate dataValidade;
+    private String titulo;
+    private String descricao;
+    private boolean publico;
+    private List<PerguntaDTO> perguntas;
+    private CadastroDTO responsavel;
 }
