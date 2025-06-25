@@ -63,4 +63,29 @@ public class MaterialController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @PutMapping(value = "/editar/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ADM')")
+    public ResponseEntity<?> editarMaterial(
+            @PathVariable Long id,
+            @RequestPart("dados") SuportMaterialDTO dto,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+        try {
+            suportMaterialService.editar(id, dto, file);
+            return ResponseEntity.ok("Material atualizado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/remover/{id}")
+    @PreAuthorize("hasAuthority('ADM')")
+    public ResponseEntity<?> removerMaterial(@PathVariable Long id) {
+        try {
+            suportMaterialService.remover(id);
+            return ResponseEntity.ok("Material removido com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

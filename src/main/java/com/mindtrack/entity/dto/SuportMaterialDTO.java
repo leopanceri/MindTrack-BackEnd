@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SuportMaterialDTO {
+    private Long id;
     private String title;
     private String content;
     private List<String> links;
