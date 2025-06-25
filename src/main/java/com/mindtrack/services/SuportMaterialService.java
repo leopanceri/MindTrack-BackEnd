@@ -95,4 +95,35 @@ public class SuportMaterialService {
         SuportMaterial sm = suportMaterialRepository.findById(id).orElse(null);
         return mapper.map(sm, SuportMaterialDTO.class);
     }
+
+    @Transactional
+    public void editar(Long id, SuportMaterialDTO dto, MultipartFile file) throws Exception {
+        SuportMaterial materialExistente = suportMaterialRepository.findById(id).orElseThrow(() ->
+            new RuntimeException("Material com ID " + id + " não encontrado"));
+
+        if (file != null && !file.isEmpty()) {
+            String fileName = System.currentTimeMillis() + "_" + StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            file.transferTo(targetLocation);
+            String filePath = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/materiais/download/")
+                    .path(fileName)
+                    .toUriString();
+            materialExistente.setFileName(fileName);
+            materialExistente.setFilePath(filePath);
+        }
+
+        materialExistente.setTitle(dto.getTitle());
+        materialExistente.setContent(dto.getContent());
+        materialExistente.setLinks(dto.getLinks());
+
+        suportMaterialRepository.save(materialExistente);
+    }
+
+    @Transactional
+    public void remover(Long id) {
+        SuportMaterial material = suportMaterialRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Material com ID " + id + " não encontrado"));
+        suportMaterialRepository.delete(material);
+    }
 }
