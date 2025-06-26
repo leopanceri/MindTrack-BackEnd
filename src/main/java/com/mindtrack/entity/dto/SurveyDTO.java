@@ -11,10 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SurveyDTO {
+    private Long id;
     private LocalDate publicationDate;
     private LocalDate dueDate;
     private String title;
     private String description;
     private List<Long> questionsId;
     private int admId;
+    private boolean isPublic;
 }

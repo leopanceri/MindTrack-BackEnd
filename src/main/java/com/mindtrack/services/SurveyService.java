@@ -68,4 +68,38 @@ public class SurveyService {
         }
         return surveys.stream().map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).collect(Collectors.toList());
     }
+
+    public void editarQuestionario(Long id, SurveyDTO surveyDTO) {
+        Survey survey = surveyRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Questionário não encontrado para edição!"));
+
+        if (survey.isPublic()) {
+            throw new RuntimeException("Questionários publicados não podem ser editados.");
+        }
+
+        survey.setPublicationDate(surveyDTO.getPublicationDate());
+        survey.setDueDate(surveyDTO.getDueDate());
+        survey.setTitle(surveyDTO.getTitle());
+        survey.setDescription(surveyDTO.getDescription());
+
+        List<Question> questions = questionService.listarTodasPerguntasPorId(surveyDTO.getQuestionsId());
+        survey.setQuestions(questions);
+
+        Administrador administrador = administradorService.findById((long) surveyDTO.getAdmId());
+        survey.setPublisher(administrador);
+
+        surveyRepository.save(survey);
+    }
+
+    public void removerQuestionario(Long id) {
+        Survey survey = surveyRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Questionário não encontrado para remoção!"));
+
+        // ✅ Verifica se está publicado
+        if (survey.isPublic()) {
+            throw new RuntimeException("Questionários publicados não podem ser excluídos.");
+        }
+
+        surveyRepository.deleteById(id);
+    }
 }
