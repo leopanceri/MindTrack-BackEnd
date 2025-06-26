@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 //@CrossOrigin
@@ -87,4 +88,27 @@ public class SurveyController {
         }
     }
 
+    @PutMapping("/editarquestionario/{id}")
+    @PreAuthorize("hasAuthority('ADM')")
+    public ResponseEntity<?> editarQuestionario(@PathVariable Long id, @RequestBody SurveyDTO surveyDTO) {
+        try {
+            surveyService.editarQuestionario(id, surveyDTO);
+            return ResponseEntity.ok(Map.of("message", "Questionário atualizado com sucesso!"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Erro ao atualizar questionário: " + e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/removerquestionario/{id}")
+    @PreAuthorize("hasAuthority('ADM')")
+    public ResponseEntity<?> removerQuestionario(@PathVariable Long id) {
+        try {
+            surveyService.removerQuestionario(id);
+            return ResponseEntity.ok(Map.of("message", "Questionário removido com sucesso!"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Erro ao remover questionário: " + e.getMessage()));
+        }
+    }
 }
