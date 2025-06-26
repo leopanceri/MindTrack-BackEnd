@@ -90,7 +90,7 @@ public class SurveyController {
 
     @PutMapping("/editarquestionario/{id}")
     @PreAuthorize("hasAuthority('ADM')")
-    public ResponseEntity<?> editarQuestionario(@PathVariable Long id, @RequestBody SurveyDTO surveyDTO) {
+    public ResponseEntity<?> editarQuestionario(@PathVariable Long id, @RequestBody QuestionarioDTO surveyDTO) {
         try {
             surveyService.editarQuestionario(id, surveyDTO);
             return ResponseEntity.ok(Map.of("message", "Questionário atualizado com sucesso!"));

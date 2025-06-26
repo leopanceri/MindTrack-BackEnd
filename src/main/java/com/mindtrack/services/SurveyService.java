@@ -69,38 +69,35 @@ public class SurveyService {
         return questionarios.stream().map(e-> surveyMapper.map(e, SurveyResponseDTO.class)).collect(Collectors.toList());
     }
 
-    public void removerQuestionario(Long id) {
-        surveyRepository.deleteById(id);
-    }
 
-    public void editarQuestionario(Long id, SurveyDTO surveyDTO) {
-        Survey survey = surveyRepository.findById(id)
+    public void editarQuestionario(Long id, QuestionarioDTO surveyDTO) {
+        Questionario survey = surveyRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Questionário não encontrado para edição!"));
 
-        if (survey.isPublic()) {
+        if (survey.isPublico()) {
             throw new RuntimeException("Questionários publicados não podem ser editados.");
         }
 
-        survey.setPublicationDate(surveyDTO.getPublicationDate());
-        survey.setDueDate(surveyDTO.getDueDate());
-        survey.setTitle(surveyDTO.getTitle());
-        survey.setDescription(surveyDTO.getDescription());
+        survey.setDataPublicacao(surveyDTO.getDataPublicacao());
+        survey.setDataValidade(surveyDTO.getDataValidade());
+        survey.setTitulo(surveyDTO.getTitulo());
+        survey.setDescricao(surveyDTO.getDescricao());
 
-        List<Question> questions = questionService.listarTodasPerguntasPorId(surveyDTO.getQuestionsId());
-        survey.setQuestions(questions);
+        List<Pergunta> questions = questionService.listarTodasPerguntasPorId(surveyDTO.getPerguntasId());
+        survey.setPerguntas(questions);
 
         Administrador administrador = administradorService.findById((long) surveyDTO.getAdmId());
-        survey.setPublisher(administrador);
+        survey.setResponsavel(administrador);
 
         surveyRepository.save(survey);
     }
 
     public void removerQuestionario(Long id) {
-        Survey survey = surveyRepository.findById(id)
+        Questionario survey = surveyRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Questionário não encontrado para remoção!"));
 
         // ✅ Verifica se está publicado
-        if (survey.isPublic()) {
+        if (survey.isPublico()) {
             throw new RuntimeException("Questionários publicados não podem ser excluídos.");
         }
 
