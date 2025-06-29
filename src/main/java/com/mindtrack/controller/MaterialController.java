@@ -1,12 +1,10 @@
 package com.mindtrack.controller;
 
-import com.mindtrack.entity.SuportMaterial;
 import com.mindtrack.entity.dto.SuportMaterialDTO;
 import com.mindtrack.services.SuportMaterialService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +29,7 @@ public class MaterialController {
     public ResponseEntity<?> criaMaterialApoio(@RequestPart("dados") SuportMaterialDTO dto,
                                                @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
-            suportMaterialService.save(dto, file);
+            suportMaterialService.criarMaterial(dto, file);
             return ResponseEntity.status(HttpStatus.CREATED).body("Material criado com sucesso!");
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

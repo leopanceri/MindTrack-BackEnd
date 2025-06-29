@@ -24,8 +24,7 @@ public class RelatorioController {
     @GetMapping("/questionario/{id}")
     public ResponseEntity<?> getRelatorioQuestionario(@PathVariable Long id) {
         try {
-            Map<String, Object> relatorio = relatorioService.gerarRelatorioQuestionario(id);
-            return ResponseEntity.ok(relatorio);
+            return ResponseEntity.ok( relatorioService.gerarRelatorio(id));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

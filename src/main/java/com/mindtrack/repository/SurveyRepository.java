@@ -1,6 +1,9 @@
 package com.mindtrack.repository;
 
+import com.mindtrack.entity.Pergunta;
 import com.mindtrack.entity.Questionario;
+import com.mindtrack.entity.dto.relatorio.RespostaAbertaDTO;
+import com.mindtrack.entity.dto.relatorio.RespostaAgrupadaDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +20,10 @@ public interface SurveyRepository extends JpaRepository<Questionario, Long> {
         WHERE rq.funcionario.id = :funcId)
 """)
     List<Questionario> findQuestionariosNaoRespondidosPorUsuario(@Param("funcId") Long funcionarioId);
+
+
+
+
+
+
 }
