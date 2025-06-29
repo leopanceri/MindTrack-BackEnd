@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -73,7 +74,7 @@ public class UsuarioService {
         return mapper.map(usuario.get(), CadastroDTO.class);
     }    
 
-    public CadastroDTO atualizaCadastro(CadastroDTO c) {
+    public CadastroDTO editarUsuario(CadastroDTO c) {
         if(Objects.equals(c.getPerfil(), "Funcionário")) {
             return mapper.map(funcionarioService.updateFuncionario(c), CadastroDTO.class);
         } else if (Objects.equals(c.getPerfil(), "Administrador")) {
@@ -83,10 +84,16 @@ public class UsuarioService {
         }
     }
 
-    public void inativaCadastro(Long id) {
+    public void inativaUsuario(Long id) {
         Usuario u = usuarioRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado com o ID: " + id));
         u.setStatus(Status.INATIVO);
         usuarioRepository.save(u);
     }
+
+    public Usuario buscarPorEmail(String email){
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
+        return usuario;
+    }
+
 
 }

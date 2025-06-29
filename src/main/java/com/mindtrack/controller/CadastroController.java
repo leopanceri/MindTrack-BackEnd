@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 //@CrossOrigin
 @RestController
 public class CadastroController {
@@ -56,7 +54,7 @@ public class CadastroController {
     public ResponseEntity<?> atualizaCadastro(@RequestBody CadastroDTO c){
         try{
 
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioService.atualizaCadastro(c));
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioService.editarUsuario(c));
         }catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro na atualização cadastral");
         }
@@ -65,7 +63,7 @@ public class CadastroController {
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> removerUsuario(@PathVariable Long id){
         try{
-            usuarioService.inativaCadastro(id);
+            usuarioService.inativaUsuario(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         }catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

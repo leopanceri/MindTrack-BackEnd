@@ -54,7 +54,7 @@ public class QuestionService {
         return lista;
     }
 
-    public void adicionaTema(TemaPergunta novoTemaPergunta) {
+    public void adicionarTema(TemaPergunta novoTemaPergunta) {
         temaPerguntaRepository.save(novoTemaPergunta);
     }
 }

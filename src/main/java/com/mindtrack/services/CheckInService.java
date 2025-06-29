@@ -34,7 +34,7 @@ public class CheckInService {
         checkInRepository.save(checkIn);
     }
 
-    public List<Map<String, Object>> obterMediaPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+    public List<Map<String, Object>> mediaPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
         List<Object[]> resultados = checkInRepository.obterMediaPorSetor(dataInicial, dataFinal);
 
         List<Map<String, Object>> lista = new ArrayList<>();
@@ -47,7 +47,7 @@ public class CheckInService {
         return lista;
     }
 
-    public List<Map<String, Object>> obterPercentualPorNota(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+    public List<Map<String, Object>> percentualPorNota(LocalDateTime dataInicial, LocalDateTime dataFinal) {
         List<Object[]> resultados = checkInRepository.obterPercentualPorNota(dataInicial, dataFinal);
 
         List<Map<String, Object>> lista = new ArrayList<>();
@@ -60,7 +60,7 @@ public class CheckInService {
         return lista;
     }
 
-    public List<Map<String, Object>> obterPercentualNegativoPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+    public List<Map<String, Object>> percentualNegativoPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
         List<Object[]> resultados = checkInRepository.obterPercentualNegativoPorSetor(dataInicial, dataFinal);
 
         List<Map<String, Object>> lista = new ArrayList<>();
@@ -73,7 +73,7 @@ public class CheckInService {
         return lista;
     }
 
-    public List<Map<String, Object>> obterPercentualRespondentesPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+    public List<Map<String, Object>> paticipacaoPorSetor(LocalDateTime dataInicial, LocalDateTime dataFinal) {
         List<Object[]> resultados = checkInRepository.obterPercentualRespondentesPorSetor(dataInicial, dataFinal);
 
         List<Map<String, Object>> lista = new ArrayList<>();

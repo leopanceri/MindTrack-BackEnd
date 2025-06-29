@@ -51,7 +51,7 @@ public class QuestionController {
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> adNovoTeMa(@RequestBody TemaPergunta novoTemaPergunta) {
         try {
-            questionService.adicionaTema(novoTemaPergunta);
+            questionService.adicionarTema(novoTemaPergunta);
             return ResponseEntity.status(HttpStatus.OK).build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro ao listar Temas Perguntas!");

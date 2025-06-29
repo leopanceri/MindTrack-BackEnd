@@ -42,7 +42,7 @@ public class CheckInController {
     public ResponseEntity<List<Map<String, Object>>> obterMediaPorSetor(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
-        return ResponseEntity.ok(checkInService.obterMediaPorSetor(dataInicial, dataFinal));
+        return ResponseEntity.ok(checkInService.mediaPorSetor(dataInicial, dataFinal));
     }
 
     @GetMapping("/percentual-por-nota")
@@ -50,7 +50,7 @@ public class CheckInController {
     public ResponseEntity<List<Map<String, Object>>> obterPercentualPorNota(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
-        return ResponseEntity.ok(checkInService.obterPercentualPorNota(dataInicial, dataFinal));
+        return ResponseEntity.ok(checkInService.percentualPorNota(dataInicial, dataFinal));
     }
 
     @GetMapping("/percentual-negativo-por-setor")
@@ -58,7 +58,7 @@ public class CheckInController {
     public ResponseEntity<List<Map<String, Object>>> obterPercentualNegativoPorSetor(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
-        return ResponseEntity.ok(checkInService.obterPercentualNegativoPorSetor(dataInicial, dataFinal));
+        return ResponseEntity.ok(checkInService.percentualNegativoPorSetor(dataInicial, dataFinal));
     }
 
     @GetMapping("/percentual-respondentes-por-setor")
@@ -66,6 +66,6 @@ public class CheckInController {
     public ResponseEntity<List<Map<String, Object>>> obterPercentualRespondentesPorSetor(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
-        return ResponseEntity.ok(checkInService.obterPercentualRespondentesPorSetor(dataInicial, dataFinal));
+        return ResponseEntity.ok(checkInService.paticipacaoPorSetor(dataInicial, dataFinal));
     }
 }

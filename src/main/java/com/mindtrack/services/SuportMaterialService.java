@@ -40,7 +40,7 @@ public class SuportMaterialService {
     }
 
     @Transactional
-    public void save(SuportMaterialDTO materialDTO, MultipartFile file) throws Exception {
+    public void criarMaterial(SuportMaterialDTO materialDTO, MultipartFile file) throws Exception {
         String fileName = null;
         String filePath = null;
         if(file != null && !file.isEmpty()) {
