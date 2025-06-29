@@ -16,5 +16,5 @@ public class MaterialApoioDTO {
     private String conteudo;
     private List<String> links;
     private String nomeArquivo;
-    private String filePath;
+    private Long idAdmin;
 }

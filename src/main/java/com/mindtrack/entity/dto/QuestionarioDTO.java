@@ -16,7 +16,7 @@ public class QuestionarioDTO {
     private String titulo;
     private String descricao;
     private List<Long> perguntasId;
-    private int admId;
+    private Long admId;
     private boolean publico;
 }
 

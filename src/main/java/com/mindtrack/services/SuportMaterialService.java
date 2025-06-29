@@ -1,5 +1,6 @@
 package com.mindtrack.services;
 
+import com.mindtrack.entity.Administrador;
 import com.mindtrack.services.helpers.FileStorageProperties;
 import com.mindtrack.entity.MaterialApoio;
 import com.mindtrack.entity.dto.MaterialApoioDTO;
@@ -33,6 +34,8 @@ public class SuportMaterialService {
 
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private AdministradorService administradorService;
 
     public SuportMaterialService(SuportMaterialRepository suportMaterialRepository, FileStorageProperties fileStorageProperties) {
         this.suportMaterialRepository = suportMaterialRepository;
@@ -43,6 +46,7 @@ public class SuportMaterialService {
     public void criarMaterial(MaterialApoioDTO materialDTO, MultipartFile file) throws Exception {
         String fileName = null;
         String filePath = null;
+        Administrador adm = administradorService.buscaPorId(materialDTO.getIdAdmin());
         if(file != null && !file.isEmpty()) {
             fileName = System.currentTimeMillis() + "_" +StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             try{
@@ -62,7 +66,7 @@ public class SuportMaterialService {
         materialApoio.setConteudo(materialDTO.getConteudo());
         materialApoio.setLinks(materialDTO.getLinks());
         materialApoio.setNomeArquivo(fileName);
-        //suportMaterial.setFilePath(filePath);
+        materialApoio.setResponsavel(adm);
         suportMaterialRepository.save(materialApoio);
     }
 

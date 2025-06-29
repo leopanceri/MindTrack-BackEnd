@@ -31,5 +31,8 @@ public class MaterialApoio {
     private List<String> links;
     @Column(name = "nome_arquivo")
     private String nomeArquivo;
+    @ManyToOne
+    @JoinColumn(name = "id_administrador")
+    private Administrador responsavel;
 
 }
