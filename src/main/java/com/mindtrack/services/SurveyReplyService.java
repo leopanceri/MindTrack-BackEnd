@@ -1,7 +1,7 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.*;
-import com.mindtrack.entity.dto.ReplyDTO;
+import com.mindtrack.entity.dto.RespostaDTO;
 import com.mindtrack.repository.OpcaoRespostaRepository;
 import com.mindtrack.repository.QuestionRepository;
 import com.mindtrack.repository.SurveyReplayRepository;
@@ -29,13 +29,13 @@ public class SurveyReplyService {
     SurveyService surveyService;
 
     @Transactional
-    public void salvarResposta(Long surveyId, Long funcionarioId, List<ReplyDTO> replies){
-        Funcionario funcionario = funcionarioService.findById(funcionarioId);
+    public void salvarResposta(Long surveyId, Long funcionarioId, List<RespostaDTO> replies){
+        Funcionario funcionario = funcionarioService.buscaPorId(funcionarioId);
         Questionario questionario = surveyService.findSurveyById(surveyId);
 
         List<RespostaQuestionario> replyList = new ArrayList<>();
 
-        for (ReplyDTO dto : replies) {
+        for (RespostaDTO dto : replies) {
             RespostaQuestionario reply = new RespostaQuestionario();
             reply.setFuncionario(funcionario);
             reply.setQuestionario(questionario);

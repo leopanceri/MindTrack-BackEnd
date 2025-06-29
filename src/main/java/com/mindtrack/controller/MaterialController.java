@@ -1,6 +1,6 @@
 package com.mindtrack.controller;
 
-import com.mindtrack.entity.dto.SuportMaterialDTO;
+import com.mindtrack.entity.dto.MaterialApoioDTO;
 import com.mindtrack.services.SuportMaterialService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class MaterialController {
 
     @PostMapping(value ="/criar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ADM')")
-    public ResponseEntity<?> criaMaterialApoio(@RequestPart("dados") SuportMaterialDTO dto,
+    public ResponseEntity<?> criaMaterialApoio(@RequestPart("dados") MaterialApoioDTO dto,
                                                @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             suportMaterialService.criarMaterial(dto, file);
@@ -37,7 +37,7 @@ public class MaterialController {
     }
     
     @GetMapping("/listar")
-    public ResponseEntity<List<SuportMaterialDTO>> listar() {
+    public ResponseEntity<List<MaterialApoioDTO>> listar() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(suportMaterialService.listarTodos());
         }catch (Exception e){
@@ -66,7 +66,7 @@ public class MaterialController {
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> editarMaterial(
             @PathVariable Long id,
-            @RequestPart("dados") SuportMaterialDTO dto,
+            @RequestPart("dados") MaterialApoioDTO dto,
             @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             suportMaterialService.editar(id, dto, file);

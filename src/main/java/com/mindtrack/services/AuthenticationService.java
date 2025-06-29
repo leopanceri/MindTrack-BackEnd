@@ -66,8 +66,8 @@ public class AuthenticationService {
 
     public void requisitaNovaSenha(String email) {
         Usuario user = usuarioRepository.findByEmail(email).orElseThrow();
-        String resetLink = passwordTokenService.criaLinkResetPassword(user, 3*60);
-        emailService.enviaEmailRecuperaSenha(resetLink, "password_email", user);
+        String resetToken = passwordTokenService.criaLinkResetPassword(user, 3*60);
+        emailService.enviaEmailRecuperaSenha(resetToken, "password_email", user);
     }
 
     public boolean cadastraNovaSenha(String token, String novaSenha) {
@@ -76,7 +76,7 @@ public class AuthenticationService {
             user.setSenha(passwordEncoder.encode(novaSenha));
             user.setStatus(Status.ATIVO);
             usuarioRepository.save(user);
-            passwordTokenService.removeTokemExistente(user);
+            passwordTokenService.removeToken(user);
             return true;
         }else{
             return false;

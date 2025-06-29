@@ -1,8 +1,8 @@
 package com.mindtrack.services;
 
 import com.mindtrack.services.helpers.FileStorageProperties;
-import com.mindtrack.entity.SuportMaterial;
-import com.mindtrack.entity.dto.SuportMaterialDTO;
+import com.mindtrack.entity.MaterialApoio;
+import com.mindtrack.entity.dto.MaterialApoioDTO;
 import com.mindtrack.repository.SuportMaterialRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -40,7 +40,7 @@ public class SuportMaterialService {
     }
 
     @Transactional
-    public void criarMaterial(SuportMaterialDTO materialDTO, MultipartFile file) throws Exception {
+    public void criarMaterial(MaterialApoioDTO materialDTO, MultipartFile file) throws Exception {
         String fileName = null;
         String filePath = null;
         if(file != null && !file.isEmpty()) {
@@ -57,13 +57,13 @@ public class SuportMaterialService {
                 throw new RuntimeException("Falha ao salvar arquivo!");
             }
         }
-        SuportMaterial suportMaterial = new SuportMaterial();
-        suportMaterial.setTitle(materialDTO.getTitle());
-        suportMaterial.setContent(materialDTO.getContent());
-        suportMaterial.setLinks(materialDTO.getLinks());
-        suportMaterial.setFileName(fileName);
-        suportMaterial.setFilePath(filePath);
-        suportMaterialRepository.save(suportMaterial);
+        MaterialApoio materialApoio = new MaterialApoio();
+        materialApoio.setTitulo(materialDTO.getTitulo());
+        materialApoio.setConteudo(materialDTO.getConteudo());
+        materialApoio.setLinks(materialDTO.getLinks());
+        materialApoio.setNomeArquivo(fileName);
+        //suportMaterial.setFilePath(filePath);
+        suportMaterialRepository.save(materialApoio);
     }
 
     @Transactional
@@ -86,19 +86,19 @@ public class SuportMaterialService {
         }
     }
 
-    public List<SuportMaterialDTO> listarTodos() {
-        List<SuportMaterial> suportMaterials = suportMaterialRepository.findAll();
-        return suportMaterials.stream().map(e -> mapper.map(e, SuportMaterialDTO.class)).collect(Collectors.toList());
+    public List<MaterialApoioDTO> listarTodos() {
+        List<MaterialApoio> materialApoios = suportMaterialRepository.findAll();
+        return materialApoios.stream().map(e -> mapper.map(e, MaterialApoioDTO.class)).collect(Collectors.toList());
     }
 
-    public SuportMaterialDTO buscarPorId(Long id) {
-        SuportMaterial sm = suportMaterialRepository.findById(id).orElse(null);
-        return mapper.map(sm, SuportMaterialDTO.class);
+    public MaterialApoioDTO buscarPorId(Long id) {
+        MaterialApoio sm = suportMaterialRepository.findById(id).orElse(null);
+        return mapper.map(sm, MaterialApoioDTO.class);
     }
 
     @Transactional
-    public void editar(Long id, SuportMaterialDTO dto, MultipartFile file) throws Exception {
-        SuportMaterial materialExistente = suportMaterialRepository.findById(id).orElseThrow(() ->
+    public void editar(Long id, MaterialApoioDTO dto, MultipartFile file) throws Exception {
+        MaterialApoio materialExistente = suportMaterialRepository.findById(id).orElseThrow(() ->
             new RuntimeException("Material com ID " + id + " não encontrado"));
 
         if (file != null && !file.isEmpty()) {
@@ -109,12 +109,11 @@ public class SuportMaterialService {
                     .path("/materiais/download/")
                     .path(fileName)
                     .toUriString();
-            materialExistente.setFileName(fileName);
-            materialExistente.setFilePath(filePath);
+            materialExistente.setNomeArquivo(fileName);
         }
 
-        materialExistente.setTitle(dto.getTitle());
-        materialExistente.setContent(dto.getContent());
+        materialExistente.setTitulo(dto.getTitulo());
+        materialExistente.setConteudo(dto.getConteudo());
         materialExistente.setLinks(dto.getLinks());
 
         suportMaterialRepository.save(materialExistente);
@@ -122,7 +121,7 @@ public class SuportMaterialService {
 
     @Transactional
     public void remover(Long id) {
-        SuportMaterial material = suportMaterialRepository.findById(id)
+        MaterialApoio material = suportMaterialRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Material com ID " + id + " não encontrado"));
         suportMaterialRepository.delete(material);
     }
