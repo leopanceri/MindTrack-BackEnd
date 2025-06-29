@@ -1,16 +1,12 @@
 package com.mindtrack.services;
 
 import com.mindtrack.entity.Administrador;
-import com.mindtrack.entity.Funcionario;
-import com.mindtrack.entity.Usuario;
 import com.mindtrack.entity.dto.CadastroDTO;
 import com.mindtrack.enums.Status;
 import com.mindtrack.repository.AdministradorRepository;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdministradorService {
@@ -21,17 +17,17 @@ public class AdministradorService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Administrador createAdministrador(Administrador a){
+    public Administrador criarAdministrador(Administrador a){
         a.setSenha(passwordEncoder.encode("abc123"));
         a.setStatus(Status.ATIVO);
         return administradorRepository.save(a);
     }
 
-    public Administrador findById(Long id) {
+    public Administrador buscaPorId(Long id) {
         return administradorRepository.findById(id).orElseThrow(()-> new RuntimeException("Administrador inválido"));
     }
 
-    public Administrador updateAdministrador(CadastroDTO cadastroDTO){
+    public Administrador editarAdministrador(CadastroDTO cadastroDTO){
         Administrador administrador = administradorRepository.findById(cadastroDTO.getId())
                 .orElseThrow(()-> new RuntimeException("Administrador não encontrado"));
         administrador.setCpf(cadastroDTO.getCpf());

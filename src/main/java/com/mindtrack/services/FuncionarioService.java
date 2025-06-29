@@ -21,22 +21,22 @@ public class FuncionarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Funcionario findById(Long id) throws ObjectNotFoundException {
+    public Funcionario buscaPorId(Long id) throws ObjectNotFoundException {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
         return funcionario.orElseThrow();
     }
 
-    public List<Funcionario> findAll(){
+    public List<Funcionario> buscarTodos(){
         return funcionarioRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
     }
 
-    public Funcionario createFuncionario(Funcionario f) {
+    public Funcionario criarFuncionario(Funcionario f) {
         f.setStatus(Status.ATIVO);
         f.setSenha(passwordEncoder.encode("123456"));
         return funcionarioRepository.save(f);
     }
 
-    public Funcionario updateFuncionario(CadastroDTO cadastroDto) {
+    public Funcionario editarFuncionario(CadastroDTO cadastroDto) {
         Funcionario funcionario = funcionarioRepository.findById(cadastroDto.getId()).orElseThrow(()->new RuntimeException("Funcionário não encontrado"));
         funcionario.setCpf(cadastroDto.getCpf());
         funcionario.setNome(cadastroDto.getNome());
@@ -45,18 +45,5 @@ public class FuncionarioService {
         funcionario.setCargo(cadastroDto.getCargo());
         return funcionarioRepository.save(funcionario);
     }
-
-    public void deleteFuncionario(Long id){
-        funcionarioRepository.deleteById(id);
-    }
-/*
-    public void removeFuncByUsuario(Usuario usuario) {
-        Funcionario f =  findByUsuario(usuario);
-        checkInService.removerCheckIns(f.getId());
-        funcionarioRepository.deleteById(f.getId());
-    }
-
- */
-
 
 }

@@ -10,11 +10,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SuportMaterialDTO {
+public class MaterialApoioDTO {
     private Long id;
-    private String title;
-    private String content;
+    private String titulo;
+    private String conteudo;
     private List<String> links;
-    private String fileName;
+    private String nomeArquivo;
     private String filePath;
 }

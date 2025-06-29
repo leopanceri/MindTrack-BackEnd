@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SurveyResponseDTO {
+public class QuestionarioResponseDTO {
     private Long id;
     private LocalDate dataPublicacao;
     private LocalDate dataValidade;
@@ -19,5 +19,4 @@ public class SurveyResponseDTO {
     private String descricao;
     private boolean publico;
     private List<PerguntaDTO> perguntas;
-    private CadastroDTO responsavel;
 }

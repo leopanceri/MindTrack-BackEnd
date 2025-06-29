@@ -14,11 +14,11 @@ public class CheckIn {
     @Column (name="id")
     private Long id;
     @Column (name="data_hora", nullable=false)
-    private LocalDateTime dateTime;
+    private LocalDateTime dataHora;
     @Column (name="nivel_humor", nullable=false)
-    private int humorLevel;
+    private int nivelHumor;
     @Column (name="comentario")
-    private String comment;
+    private String comentario;
     @ManyToOne
     @JoinColumn(name="id_funcionario", nullable=false)
     private Funcionario funcionario;
@@ -26,11 +26,11 @@ public class CheckIn {
     public CheckIn() {
     }
 
-    public CheckIn(Long id, LocalDateTime dateTime, int humorLevel, String comment, Funcionario funcionario) {
+    public CheckIn(Long id, LocalDateTime dataHora, int nivelHumor, String comentario, Funcionario funcionario) {
         this.id = id;
-        this.dateTime = dateTime;
-        this.humorLevel = humorLevel;
-        this.comment = comment;
+        this.dataHora = dataHora;
+        this.nivelHumor = nivelHumor;
+        this.comentario = comentario;
         this.funcionario = funcionario;
     }
 

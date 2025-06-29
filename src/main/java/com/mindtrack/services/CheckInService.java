@@ -20,17 +20,17 @@ public class CheckInService {
     private FuncionarioService funcionarioService;
 
     public List<CheckIn> listaCheckInFuncionario(int idFuncionario) throws ObjectNotFoundException {
-        return checkInRepository.findByFuncionarioOrderByDateTime(
-                funcionarioService.findById((long) idFuncionario)
+        return checkInRepository.findByFuncionarioOrderByDataHoraDesc(
+                funcionarioService.buscaPorId((long) idFuncionario)
         );
     }
 
     public void novoCheckIn(CheckInDTO checkInDTO) {
         CheckIn checkIn = new CheckIn();
-        checkIn.setDateTime(LocalDateTime.now());
-        checkIn.setHumorLevel(checkInDTO.getHumorLevel());
-        checkIn.setComment(checkInDTO.getComment());
-        checkIn.setFuncionario(funcionarioService.findById((long) checkInDTO.getIdFuncionario()));
+        checkIn.setDataHora(LocalDateTime.now());
+        checkIn.setNivelHumor(checkInDTO.getNivelHumor());
+        checkIn.setComentario(checkInDTO.getComentario());
+        checkIn.setFuncionario(funcionarioService.buscaPorId((long) checkInDTO.getIdFuncionario()));
         checkInRepository.save(checkIn);
     }
 

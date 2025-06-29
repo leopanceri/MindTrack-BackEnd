@@ -44,16 +44,17 @@ public class UsuarioService {
           //  return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
         if (Objects.equals(newCadastro.getPerfil(), "Funcionário")) {
             Funcionario func = new Funcionario(newCadastro);
-            func = funcionarioService.createFuncionario(func);
+            func = funcionarioService.criarFuncionario(func);
             func.setPerfil("Funcionário");
-            String resetLink = passwordTokenService.criaLinkResetPassword(func, 24*60);
-            emailService.enviaEmailCadastro(resetLink, "password_email", func);
+            String resetToken = passwordTokenService.criaLinkResetPassword(func, 24*60);
+            emailService.enviaEmailCadastro(resetToken, "password_email", func);
+
 
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(func, CadastroDTO.class));
 
         }else {
             Administrador adm = new Administrador(newCadastro);
-            adm = administradorService.createAdministrador(adm);
+            adm = administradorService.criarAdministrador(adm);
             String resetLink = passwordTokenService.criaLinkResetPassword(adm, 24*60);
             emailService.enviaEmailCadastro(resetLink, "password_email", adm);
 
@@ -76,9 +77,9 @@ public class UsuarioService {
 
     public CadastroDTO editarUsuario(CadastroDTO c) {
         if(Objects.equals(c.getPerfil(), "Funcionário")) {
-            return mapper.map(funcionarioService.updateFuncionario(c), CadastroDTO.class);
+            return mapper.map(funcionarioService.editarFuncionario(c), CadastroDTO.class);
         } else if (Objects.equals(c.getPerfil(), "Administrador")) {
-            return mapper.map(administradorService.updateAdministrador(c), CadastroDTO.class);
+            return mapper.map(administradorService.editarAdministrador(c), CadastroDTO.class);
         }else{
             throw new RuntimeException("Perfil informado é inválido!");
         }

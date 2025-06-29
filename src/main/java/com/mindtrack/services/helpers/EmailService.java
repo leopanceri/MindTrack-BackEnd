@@ -28,9 +28,9 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String destinatario;
 
-    public String enviaEmailCadastro(String link, String templateName, Usuario user) {
+    public String enviaEmailCadastro(String token, String templateName, Usuario user) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
+        String link = "http://localhost:4200/login/nova-senha?token=" + token;
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("emailTitle", "Bem vindo!");
         templateVariables.put("subject", "Bem vindo ao Mindtrack!");
@@ -59,9 +59,9 @@ public class EmailService {
         }
     }
 
-    public String enviaEmailRecuperaSenha(String link, String templateName, Usuario user) {
+    public String enviaEmailRecuperaSenha(String token, String templateName, Usuario user) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
+        String link = "http://localhost:4200/login/nova-senha?token=" + token;
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("emailTitle", "Recuperação de Senha!");
         templateVariables.put("subject", "Recuperação de Senha!");

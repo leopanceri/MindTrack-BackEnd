@@ -15,7 +15,7 @@ public class FuncionarioController {
     @GetMapping("/funcionarios/{id}")
     public ResponseEntity<?> getFuncionario(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(funcionarioService.findById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(funcionarioService.buscaPorId(id));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
@@ -24,7 +24,7 @@ public class FuncionarioController {
     @GetMapping("/funcionarios")
     public ResponseEntity<?> obterTodosFuncionarios(){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(funcionarioService.findAll());
+            return ResponseEntity.status(HttpStatus.OK).body(funcionarioService.buscarTodos());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getClass());
         }

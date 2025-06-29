@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
 
-    List<CheckIn> findByFuncionarioOrderByDateTime(Funcionario funcionario);
+    List<CheckIn> findByFuncionarioOrderByDataHoraDesc(Funcionario funcionario);
 
     @Query(value = """
         SELECT f.setor AS setor,
