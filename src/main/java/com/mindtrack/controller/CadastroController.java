@@ -42,7 +42,7 @@ public class CadastroController {
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> getUsuario(@PathVariable Long id) {
         try {
-            CadastroDTO cadastroDTO = usuarioService.findById(id);
+            CadastroDTO cadastroDTO = usuarioService.buscaPorId(id);
             return ResponseEntity.status(HttpStatus.OK).body(cadastroDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

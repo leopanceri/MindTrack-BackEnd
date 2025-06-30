@@ -64,7 +64,7 @@ public class UsuarioService {
         return cadastroList.stream().map(e -> mapper.map(e, CadastroDTO.class)).collect(Collectors.toList());
    }
 
-    public CadastroDTO findById(Long idUsuario) {
+    public CadastroDTO buscaPorId(Long idUsuario) {
         Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
         if (usuario.isEmpty()) {
             throw new RuntimeException("Usuário não encontrado com o ID: " + idUsuario);
