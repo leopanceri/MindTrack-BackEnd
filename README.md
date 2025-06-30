@@ -14,13 +14,13 @@ Este repositório corresponde à aplicação Back-End do sistema desenvolvido co
 4. Abra o terminal e execute git clone git@github.com:Mind-Track/MindTrack-Back.git (ou HTTPS https://github.com/Mind-Track/MindTrack-Back.git).
 
 ### Para executar:
-Crie o banco de dados mindtrackDB no postgres
-Caso necessario altere o arquivo application.properties com as credencias do seu servidor postgres
+1. Crie o banco de dados mindtrackDB no postgres
+2. Caso necessario altere o arquivo application.properties com as credencias do seu servidor postgres
 
-  spring.datasource.username= postgres
-  spring.datasource.password=
+  - spring.datasource.username= postgres
+  - spring.datasource.password=
 
-Basta executar o arquivo MindTrackBackApplication.java
+3. Basta executar o arquivo MindTrackBackApplication.java
 
 ### 🛠️ Criação rápida de Administrador
 
