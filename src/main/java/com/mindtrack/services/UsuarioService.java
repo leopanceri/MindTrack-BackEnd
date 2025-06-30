@@ -35,8 +35,6 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     EmailService emailService;
-    @Autowired
-    PasswordTokenService passwordTokenService;
 
 
     public ResponseEntity<?> cadastrarUsuario(CadastroDTO newCadastro) {
@@ -46,8 +44,8 @@ public class UsuarioService {
             Funcionario func = new Funcionario(newCadastro);
             func = funcionarioService.criarFuncionario(func);
             func.setPerfil("Funcionário");
-            String resetToken = passwordTokenService.criaLinkResetPassword(func, 24*60);
-            emailService.enviaEmailCadastro(resetToken, "password_email", func);
+
+            emailService.enviaEmailCadastro(func);
 
 
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(func, CadastroDTO.class));
@@ -55,8 +53,7 @@ public class UsuarioService {
         }else {
             Administrador adm = new Administrador(newCadastro);
             adm = administradorService.criarAdministrador(adm);
-            String resetLink = passwordTokenService.criaLinkResetPassword(adm, 24*60);
-            emailService.enviaEmailCadastro(resetLink, "password_email", adm);
+            emailService.enviaEmailCadastro(adm);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(adm, CadastroDTO.class));
         }
@@ -94,6 +91,10 @@ public class UsuarioService {
     public Usuario buscarPorEmail(String email){
         Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
         return usuario;
+    }
+
+    public void atualizaUsuario(Usuario usuario){
+        usuarioRepository.save(usuario);
     }
 
 

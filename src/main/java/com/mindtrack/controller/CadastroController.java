@@ -53,7 +53,6 @@ public class CadastroController {
     @PreAuthorize("hasAuthority('ADM')")//ainda não está implementado
     public ResponseEntity<?> atualizaCadastro(@RequestBody CadastroDTO c){
         try{
-
             return ResponseEntity.status(HttpStatus.OK).body(usuarioService.editarUsuario(c));
         }catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro na atualização cadastral");

@@ -1,6 +1,7 @@
 package com.mindtrack.services.helpers;
 
 import com.mindtrack.entity.Usuario;
+import com.mindtrack.services.PasswordTokenService;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +23,19 @@ public class EmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    @Autowired
+    PasswordTokenService passwordTokenService;
+
     @Value("${spring.mail.username}")
     private String remetente;
 
     @Value("${spring.mail.username}")
     private String destinatario;
 
-    public String enviaEmailCadastro(String token, String templateName, Usuario user) {
+    public String enviaEmailCadastro(Usuario user) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        String link = "http://localhost:4200/login/nova-senha?token=" + token;
+        String resetToken = passwordTokenService.criaLinkResetPassword(user, 24*60);
+        String link = "http://localhost:4200/login/nova-senha?token=" + resetToken;
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("emailTitle", "Bem vindo!");
         templateVariables.put("subject", "Bem vindo ao Mindtrack!");
@@ -46,7 +51,7 @@ public class EmailService {
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
             Context context = new Context();
             context.setVariables(templateVariables); // Define as variáveis para o template
-            String htmlContent = templateEngine.process(templateName, context);
+            String htmlContent = templateEngine.process("password_email", context);
             helper.setTo(destinatario);
             helper.setFrom(remetente); // Configure seu e-mail de remetente
             helper.setSubject((String)templateVariables.get("subject"));
@@ -59,9 +64,10 @@ public class EmailService {
         }
     }
 
-    public String enviaEmailRecuperaSenha(String token, String templateName, Usuario user) {
+    public String enviaEmailRecuperaSenha(Usuario user) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        String link = "http://localhost:4200/login/nova-senha?token=" + token;
+        String resetToken = passwordTokenService.criaLinkResetPassword(user, 3*60);
+        String link = "http://localhost:4200/login/nova-senha?token=" + resetToken;
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("emailTitle", "Recuperação de Senha!");
         templateVariables.put("subject", "Recuperação de Senha!");
@@ -77,7 +83,7 @@ public class EmailService {
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
             Context context = new Context();
             context.setVariables(templateVariables); // Define as variáveis para o template
-            String htmlContent = templateEngine.process(templateName, context);
+            String htmlContent = templateEngine.process("password_email", context);
             helper.setTo(destinatario);
             helper.setFrom(remetente); // Configure seu e-mail de remetente
             helper.setSubject((String)templateVariables.get("subject"));

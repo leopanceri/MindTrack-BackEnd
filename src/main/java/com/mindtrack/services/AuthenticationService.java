@@ -31,7 +31,7 @@ public class AuthenticationService {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    UsuarioService usuarioService;
     @Autowired
     EmailService emailService;
     @Autowired
@@ -65,9 +65,8 @@ public class AuthenticationService {
     }
 
     public void requisitaNovaSenha(String email) {
-        Usuario user = usuarioRepository.findByEmail(email).orElseThrow();
-        String resetToken = passwordTokenService.criaLinkResetPassword(user, 3*60);
-        emailService.enviaEmailRecuperaSenha(resetToken, "password_email", user);
+        Usuario user = usuarioService.buscarPorEmail(email);//usuarioRepository.findByEmail(email).orElseThrow();
+        emailService.enviaEmailRecuperaSenha(user);
     }
 
     public boolean cadastraNovaSenha(String token, String novaSenha) {
@@ -75,7 +74,7 @@ public class AuthenticationService {
         if(user != null){
             user.setSenha(passwordEncoder.encode(novaSenha));
             user.setStatus(Status.ATIVO);
-            usuarioRepository.save(user);
+            usuarioService.atualizaUsuario(user);
             passwordTokenService.removeToken(user);
             return true;
         }else{
