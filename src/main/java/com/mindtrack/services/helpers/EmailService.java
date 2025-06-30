@@ -52,7 +52,7 @@ public class EmailService {
             Context context = new Context();
             context.setVariables(templateVariables); // Define as variáveis para o template
             String htmlContent = templateEngine.process("password_email", context);
-            helper.setTo(destinatario);
+            helper.setTo(user.getEmail());
             helper.setFrom(remetente); // Configure seu e-mail de remetente
             helper.setSubject((String)templateVariables.get("subject"));
             helper.setText(htmlContent, true);
