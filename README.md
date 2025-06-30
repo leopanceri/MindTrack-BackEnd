@@ -17,8 +17,8 @@ Este repositório corresponde à aplicação Back-End do sistema desenvolvido co
 Crie o banco de dados mindtrackDB no postgres
 Caso necessario altere o arquivo application.properties com as credencias do seu servidor postgres
 
-  *spring.datasource.username= postgres
-  *spring.datasource.password=
+  spring.datasource.username= postgres
+  spring.datasource.password=
 
 Basta executar o arquivo MindTrackBackApplication.java
 
