@@ -21,6 +21,8 @@ Basta executar o arquivo MindTrackBackApplication.java
 Após iniciar o backend, execute o comando abaixo para criar um usuário administrador padrão:
 curl -Uri "http://localhost:8080/cadastro/novo" -Method POST -Headers @{ "Content-Type" = "application/json" } -Body '{"cpf":"999.999.999-99","nome":"Administrador","email":"admin@gmail.com","setor":"Comercial","cargo":"Analista","perfil":"Administrador"}'
 
+A senha padrão para login pós curl é "abc123".
+
 Desenvolvido por:
 - LEONARDO EUGÊNIO PANCERI DE ARAUJO
 - NICOLAS PORTELA BARBOSA
