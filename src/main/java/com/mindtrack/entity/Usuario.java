@@ -20,7 +20,7 @@ public class Usuario {
     private String cpf;
     @Column (name="nome", nullable=false, length=50)
     private String nome;
-    @Column (name="email", nullable=false, unique = true, length=50)
+    @Column (name="email", nullable=false, length=50)
     private String email;
     @Column (name="setor", nullable=false, length=50)
     private String setor;
