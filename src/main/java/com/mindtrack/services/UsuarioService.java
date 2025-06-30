@@ -38,8 +38,8 @@ public class UsuarioService {
 
 
     public ResponseEntity<?> cadastrarUsuario(CadastroDTO newCadastro) {
-        //if(usuarioRepository.existsByEmail(newCadastro.getEmail()))
-          //  return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
+        if(usuarioRepository.existsByEmail(newCadastro.getEmail()))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
         if (Objects.equals(newCadastro.getPerfil(), "Funcionário")) {
             Funcionario func = new Funcionario(newCadastro);
             func = funcionarioService.criarFuncionario(func);
