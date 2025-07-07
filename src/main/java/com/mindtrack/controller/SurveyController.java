@@ -54,7 +54,6 @@ public class SurveyController {
     }
 
     @PostMapping("/questionario/resposta")
-    @PreAuthorize("hasAuthority('FUNC')")
     public ResponseEntity<?> responderQuestionario(@RequestParam Long surveyId,
                                                    @RequestParam Long funcId,
                                                    @RequestBody List<RespostaDTO> replyList){
@@ -79,7 +78,6 @@ public class SurveyController {
 
     //endpoint para listar os questionários não respondidos por um funcionário específico
     @GetMapping("/questionarios")
-    @PreAuthorize("hasAuthority('FUNC')")
     public ResponseEntity<?> listarQuestionarios(@RequestParam Long funcId) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(surveyService.listaNaoRespondidosPorFuncionario(funcId));

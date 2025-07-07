@@ -46,7 +46,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -57,17 +57,23 @@ public class WebSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(e -> e.authenticationEntryPoint(unauthorizedHandler))
-                .authorizeHttpRequests(auth->
-                        auth.requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/cadastro/novo").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .anyRequest().authenticated());
+                .authorizeHttpRequests(auth -> auth
+
+                        // ✅ Regra final usando a sintaxe lambda que funciona no seu ambiente
+                        .requestMatchers(request -> "true".equals(request.getHeader("X-Mobile-Dev"))).permitAll()
+
+                        // ✅ Libera as rotas públicas que você já tinha
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/cadastro/novo").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // ❌ Todas as outras rotas exigem autenticação
+                        .anyRequest().authenticated());
+
+        // Adiciona de volta seu filtro JWT para que o login funcione
         httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.authenticationProvider(authenticationProvider());
 
         return httpSecurity.build();
     }
-
-
 }
-

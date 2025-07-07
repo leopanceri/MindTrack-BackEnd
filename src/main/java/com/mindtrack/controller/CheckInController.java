@@ -22,7 +22,6 @@ public class CheckInController {
     private CheckInService checkInService;
 
     @GetMapping("/historico/{id}")
-    @PreAuthorize("hasAuthority('FUNC')")
     public ResponseEntity<?> getCheckinFuncionario(@PathVariable int id) {
         try {
             return ResponseEntity.ok(checkInService.listaCheckInFuncionario(id));
@@ -32,7 +31,6 @@ public class CheckInController {
     }
 
     @PostMapping("/novo")
-    @PreAuthorize("hasAuthority('FUNC')")
     public void novoCheckin(@RequestBody CheckInDTO checkInDTO) {
         checkInService.novoCheckIn(checkInDTO);
     }
