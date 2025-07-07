@@ -23,6 +23,7 @@ public class Pergunta {
     @Column (nullable=false)
     private String texto;
     @OneToMany(mappedBy = "pergunta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     private List<OpcaoResposta> opcoes = new ArrayList<>();
 
     /*
