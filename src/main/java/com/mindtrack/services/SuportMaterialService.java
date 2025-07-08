@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -91,7 +92,7 @@ public class SuportMaterialService {
     }
 
     public List<MaterialApoioDTO> listarTodos() {
-        List<MaterialApoio> materialApoios = suportMaterialRepository.findAll();
+        List<MaterialApoio> materialApoios = suportMaterialRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         return materialApoios.stream().map(e -> mapper.map(e, MaterialApoioDTO.class)).collect(Collectors.toList());
     }
 
