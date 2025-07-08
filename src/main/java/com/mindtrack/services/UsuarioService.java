@@ -9,6 +9,7 @@ import com.mindtrack.repository.UsuarioRepository;
 import com.mindtrack.services.helpers.EmailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,7 +61,8 @@ public class UsuarioService {
     }
 
    public List<CadastroDTO> retornaTodosCadastrados(){
-        List<Usuario> cadastroList = usuarioRepository.buscarTodosExcetoStatus(Status.INATIVO);
+        Sort byName = Sort.by(Sort.Direction.ASC, "nome");
+        List<Usuario> cadastroList = usuarioRepository.buscarTodosExcetoStatus(Status.INATIVO, byName);
         return cadastroList.stream().map(e -> mapper.map(e, CadastroDTO.class)).collect(Collectors.toList());
    }
 

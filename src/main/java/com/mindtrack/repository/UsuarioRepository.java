@@ -5,6 +5,7 @@ import com.mindtrack.entity.Usuario;
 import com.mindtrack.enums.Status;
 import jakarta.persistence.ManyToOne;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByEmail(String email);
 
     @Query("SELECT u FROM Usuario u WHERE u.status <> :statusParaIgnorar")
-    List<Usuario> buscarTodosExcetoStatus(@Param("statusParaIgnorar") Status status);
+    List<Usuario> buscarTodosExcetoStatus(@Param("statusParaIgnorar") Status status, Sort sort);
 }
 
