@@ -7,12 +7,6 @@ Este repositório corresponde à aplicação Back-End do sistema desenvolvido co
 - PostgreSQL 16
 - Spring Boot: 3.3.5
 
-### Primeiro, é necessário clonar o projeto
-1. No GitHub.com, navegue até https://github.com/Mind-Track/MindTrack-Back.
-2. Nas opções acima dos arquivos do repositório selecione Code.
-3. Copie o código SSH ou HTTPS.
-4. Abra o terminal e execute git clone git@github.com:Mind-Track/MindTrack-Back.git (ou HTTPS https://github.com/Mind-Track/MindTrack-Back.git).
-
 ### Para executar:
 1. Crie o banco de dados mindtrackDB no postgres
 2. Caso necessario altere o arquivo application.properties com as credencias do seu servidor postgres
